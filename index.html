@@ -32,865 +32,201 @@
             --font-body: 'Plus Jakarta Sans', sans-serif;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            font-family: var(--font-body);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-dark); color: var(--text-light); font-family: var(--font-body); overflow-x: hidden; line-height: 1.6; }
 
         /* --- NAVIGATION --- */
         nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 100;
-            padding: 16px 4%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(10, 8, 7, 0.92);
-            backdrop-filter: blur(14px);
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+            padding: 16px 4%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(10, 8, 7, 0.92); backdrop-filter: blur(14px);
             border-bottom: 1px solid rgba(212, 140, 70, 0.15);
         }
 
-        .brand-container {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            text-decoration: none;
-        }
-
+        .brand-container { display: flex; align-items: center; gap: 16px; text-decoration: none; }
         .logo-emblem-outer {
-            width: 68px;
-            height: 68px;
-            border-radius: 50%;
-            padding: 3px;
+            width: 68px; height: 68px; border-radius: 50%; padding: 3px;
             background: linear-gradient(135deg, var(--accent-gold), rgba(212, 140, 70, 0.2), var(--accent-copper));
-            box-shadow: 0 0 20px rgba(212, 140, 70, 0.35);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            box-shadow: 0 0 20px rgba(212, 140, 70, 0.35); display: flex; align-items: center; justify-content: center;
         }
+        .logo-emblem-inner { width: 100%; height: 100%; background: var(--bg-dark-card); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; }
+        .rotating-svg-ring { width: 100%; height: 100%; animation: continuousRotate 24s linear infinite; }
+        @keyframes continuousRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .logo-emblem-inner {
-            width: 100%;
-            height: 100%;
-            background: var(--bg-dark-card);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
+        .brand-text-wrapper { display: flex; flex-direction: column; }
+        .nav-logo-text { font-family: var(--font-title); font-size: 1.55rem; letter-spacing: 2.5px; font-weight: 700; color: var(--text-light); text-transform: uppercase; line-height: 1; }
+        .nav-logo-text span { color: var(--accent-gold); }
+        .founder-nav-tag { font-size: 0.8rem; color: var(--accent-gold-bright); letter-spacing: 1px; margin-top: 4px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
 
-        .rotating-svg-ring {
-            width: 100%;
-            height: 100%;
-            animation: continuousRotate 24s linear infinite;
-        }
+        .nav-right-group { display: flex; align-items: center; gap: 28px; margin-left: auto; }
+        .nav-links { display: flex; gap: 28px; list-style: none; }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; transition: color 0.3s ease; }
+        .nav-links a:hover { color: var(--accent-gold-bright); }
 
-        @keyframes continuousRotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .brand-text-wrapper {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .nav-logo-text {
-            font-family: var(--font-title);
-            font-size: 1.55rem;
-            letter-spacing: 2.5px;
-            font-weight: 700;
-            color: var(--text-light);
-            text-transform: uppercase;
-            line-height: 1;
-        }
-
-        .nav-logo-text span {
-            color: var(--accent-gold);
-        }
-
-        .founder-nav-tag {
-            font-size: 0.8rem;
-            color: var(--accent-gold-bright);
-            letter-spacing: 1px;
-            margin-top: 4px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .nav-right-group {
-            display: flex;
-            align-items: center;
-            gap: 28px;
-            margin-left: auto;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 28px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 0.85rem;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-gold-bright);
-        }
-
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
+        .nav-actions { display: flex; align-items: center; gap: 14px; }
         .admin-login-btn {
-            background: rgba(212, 140, 70, 0.12);
-            border: 1px solid rgba(212, 140, 70, 0.4);
-            color: var(--accent-gold-bright);
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            text-decoration: none;
+            background: rgba(212, 140, 70, 0.12); border: 1px solid rgba(212, 140, 70, 0.4);
+            color: var(--accent-gold-bright); padding: 8px 18px; border-radius: 20px; font-size: 0.82rem;
+            font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; text-decoration: none;
         }
-
-        .admin-login-btn:hover {
-            background: var(--accent-gold);
-            color: var(--bg-dark);
-        }
+        .admin-login-btn:hover { background: var(--accent-gold); color: var(--bg-dark); }
 
         .cart-icon-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(212, 140, 70, 0.3);
-            color: var(--text-light);
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            font-size: 1.05rem;
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(212, 140, 70, 0.3);
+            color: var(--text-light); width: 42px; height: 42px; border-radius: 50%; font-size: 1.05rem;
+            cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center;
         }
-
         .cart-badge {
-            position: absolute;
-            top: -3px;
-            right: -3px;
-            background: var(--accent-gold-bright);
-            color: var(--bg-dark);
-            font-size: 0.68rem;
-            font-weight: 800;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: absolute; top: -3px; right: -3px; background: var(--accent-gold-bright);
+            color: var(--bg-dark); font-size: 0.68rem; font-weight: 800; width: 18px; height: 18px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
         }
 
         /* --- HERO SECTION --- */
         .hero {
-            min-height: 100vh;
-            display: grid;
-            grid-template-columns: 1fr 1.35fr;
-            align-items: center;
-            padding: 120px 4% 60px 4%;
-            position: relative;
-            gap: 30px;
+            min-height: 100vh; display: grid; grid-template-columns: 1fr 1.35fr; align-items: center;
+            padding: 120px 4% 60px 4%; position: relative; gap: 30px;
             background: radial-gradient(circle at 70% 50%, rgba(45, 20, 10, 0.45) 0%, rgba(10, 8, 7, 1) 75%);
         }
-
-        .hero-text {
-            max-width: 540px;
-            z-index: 2;
-        }
-
-        .hero-subtitle {
-            font-family: var(--font-title);
-            color: var(--accent-gold);
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            font-size: 1rem;
-            margin-bottom: 12px;
-            display: block;
-        }
-
+        .hero-text { max-width: 540px; z-index: 2; }
+        .hero-subtitle { font-family: var(--font-title); color: var(--accent-gold); letter-spacing: 4px; text-transform: uppercase; font-size: 1rem; margin-bottom: 12px; display: block; }
         .hero-title {
-            font-family: var(--font-title);
-            font-size: 3.8rem;
-            line-height: 1.08;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--text-light);
-            background: linear-gradient(135deg, #FFFFFF 40%, #D48C46 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: var(--font-title); font-size: 3.8rem; line-height: 1.08; font-weight: 700; margin-bottom: 20px;
+            color: var(--text-light); background: linear-gradient(135deg, #FFFFFF 40%, #D48C46 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
         .founder-spotlight-card {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(212, 140, 70, 0.25);
-            padding: 8px 18px;
-            border-radius: 40px;
-            margin-bottom: 24px;
+            display: inline-flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 140, 70, 0.25); padding: 8px 18px; border-radius: 40px; margin-bottom: 24px;
         }
+        .founder-avatar-icon { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-gold), var(--accent-copper)); display: flex; align-items: center; justify-content: center; color: var(--bg-dark); }
+        .founder-name-en { font-family: var(--font-title); font-size: 1.25rem; font-weight: 700; color: var(--accent-gold-bright); }
+        .founder-title-sub { font-size: 0.7rem; letter-spacing: 1.5px; color: var(--text-muted); text-transform: uppercase; }
 
-        .founder-avatar-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-gold), var(--accent-copper));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--bg-dark);
-        }
-
-        .founder-name-en {
-            font-family: var(--font-title);
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--accent-gold-bright);
-        }
-
-        .founder-title-sub {
-            font-size: 0.7rem;
-            letter-spacing: 1.5px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        .hero-slide-info {
-            min-height: 110px;
-            margin-bottom: 24px;
-        }
-
-        .slide-title-display {
-            font-family: var(--font-title);
-            font-size: 1.8rem;
-            color: var(--accent-gold-bright);
-            margin-bottom: 6px;
-        }
-
-        .slide-desc-display {
-            color: var(--text-muted);
-            font-size: 1rem;
-            line-height: 1.6;
-        }
+        .hero-slide-info { min-height: 110px; margin-bottom: 24px; }
+        .slide-title-display { font-family: var(--font-title); font-size: 1.8rem; color: var(--accent-gold-bright); margin-bottom: 6px; }
+        .slide-desc-display { color: var(--text-muted); font-size: 1rem; line-height: 1.6; }
 
         .hero-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: linear-gradient(135deg, var(--accent-gold), var(--accent-copper));
-            color: var(--bg-dark);
-            padding: 15px 36px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 700;
-            letter-spacing: 1px;
+            display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, var(--accent-gold), var(--accent-copper));
+            color: var(--bg-dark); padding: 15px 36px; border-radius: 30px; text-decoration: none; font-weight: 700; letter-spacing: 1px;
         }
 
         .hero-slider-container {
-            position: relative;
-            width: 100%;
-            height: 480px;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.85);
-            border: 1px solid rgba(212, 140, 70, 0.25);
-            background: var(--bg-dark-card);
+            position: relative; width: 100%; height: 480px; border-radius: 24px; overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.85); border: 1px solid rgba(212, 140, 70, 0.25); background: var(--bg-dark-card);
         }
-
-        .slider-wrapper {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-
-        .slide-item {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 1.2s ease-in-out;
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .slide-item.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .slide-item img, .product-img-wrapper img, .modal-img-wrapper img, .admin-table img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-        }
-
+        .slider-wrapper { width: 100%; height: 100%; position: relative; }
+        .slide-item { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s ease-in-out; pointer-events: none; display: flex; align-items: center; justify-content: center; }
+        .slide-item.active { opacity: 1; pointer-events: auto; }
+        .slide-item img, .product-img-wrapper img, .modal-img-wrapper img, .admin-table img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+        
         .slide-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 35%;
-            background: linear-gradient(to top, rgba(10, 8, 7, 0.9), transparent);
-            display: flex;
-            align-items: flex-end;
-            padding: 24px;
-            z-index: 5;
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 35%;
+            background: linear-gradient(to top, rgba(10, 8, 7, 0.9), transparent); display: flex; align-items: flex-end; padding: 24px; z-index: 5;
         }
-
-        .slide-badge {
-            background: rgba(212, 140, 70, 0.85);
-            color: var(--bg-dark);
-            font-weight: 700;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-        }
-
-        .slider-dots {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            gap: 6px;
-            z-index: 10;
-        }
-
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .dot.active {
-            background: var(--accent-gold-bright);
-            width: 28px;
-            border-radius: 6px;
-        }
+        .slide-badge { background: rgba(212, 140, 70, 0.85); color: var(--bg-dark); font-weight: 700; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; }
+        .slider-dots { position: absolute; bottom: 20px; right: 20px; display: flex; gap: 6px; z-index: 10; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); cursor: pointer; transition: all 0.3s ease; }
+        .dot.active { background: var(--accent-gold-bright); width: 28px; border-radius: 6px; }
 
         /* --- FEATURES TICKER BAR --- */
         .features-ticker-bar {
-            width: 100%;
-            background: linear-gradient(90deg, rgba(14, 11, 9, 0.95), rgba(30, 20, 14, 0.95));
-            border-top: 1px solid rgba(212, 140, 70, 0.25);
-            border-bottom: 1px solid rgba(212, 140, 70, 0.25);
-            padding: 16px 4%;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            width: 100%; background: linear-gradient(90deg, rgba(14, 11, 9, 0.95), rgba(30, 20, 14, 0.95));
+            border-top: 1px solid rgba(212, 140, 70, 0.25); border-bottom: 1px solid rgba(212, 140, 70, 0.25);
+            padding: 16px 4%; display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px;
         }
-
-        .ticker-item {
-            font-family: var(--font-title);
-            color: var(--accent-gold-bright);
-            font-size: 1.05rem;
-            letter-spacing: 1.5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        .ticker-item i {
-            color: var(--accent-gold);
-        }
+        .ticker-item { font-family: var(--font-title); color: var(--accent-gold-bright); font-size: 1.05rem; letter-spacing: 1.5px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; font-weight: 600; }
+        .ticker-item i { color: var(--accent-gold); }
 
         /* --- CREAM STORY SECTION --- */
-        .cream-section {
-            background-color: var(--bg-cream);
-            color: var(--text-dark);
-            padding: 80px 6%;
-            position: relative;
-        }
+        .cream-section { background-color: var(--bg-cream); color: var(--text-dark); padding: 80px 6%; position: relative; }
+        .story-header { text-align: center; max-width: 750px; margin: 0 auto 50px auto; }
+        .story-tag { font-family: var(--font-title); color: var(--accent-copper); letter-spacing: 3px; text-transform: uppercase; font-size: 0.95rem; font-weight: 700; }
+        .story-header h2 { font-family: var(--font-title); font-size: 3rem; color: var(--text-dark); margin: 8px 0 14px 0; line-height: 1.15; }
 
-        .story-header {
-            text-align: center;
-            max-width: 750px;
-            margin: 0 auto 50px auto;
-        }
+        .cream-grid { display: grid; grid-template-columns: 220px 1fr 380px; gap: 36px; align-items: center; }
+        .stamp-container { display: flex; justify-content: center; align-items: center; }
+        .circular-stamp { width: 180px; height: 180px; border-radius: 50%; border: 2px dashed var(--accent-copper); display: flex; align-items: center; justify-content: center; position: relative; animation: rotateStamp 35s linear infinite; }
+        @keyframes rotateStamp { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .stamp-text { position: absolute; width: 100%; height: 100%; font-family: var(--font-title); font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; fill: var(--text-dark); }
+        .stamp-center { font-family: var(--font-title); font-size: 1.4rem; font-weight: 700; color: var(--accent-copper); text-align: center; line-height: 1.1; }
 
-        .story-tag {
-            font-family: var(--font-title);
-            color: var(--accent-copper);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-size: 0.95rem;
-            font-weight: 700;
-        }
+        .story-content { background: rgba(255, 255, 255, 0.5); padding: 34px; border-radius: 18px; border: 1px solid rgba(184, 101, 34, 0.15); }
+        .story-content h3 { font-family: var(--font-title); font-size: 2rem; color: var(--text-dark); margin-bottom: 12px; }
+        .story-content p { color: #4A3A34; font-size: 1.02rem; margin-bottom: 18px; line-height: 1.75; }
+        .story-quote { font-family: var(--font-title); font-size: 1.25rem; color: var(--accent-copper); font-style: italic; border-left: 3px solid var(--accent-copper); padding-left: 16px; margin-top: 15px; }
 
-        .story-header h2 {
-            font-family: var(--font-title);
-            font-size: 3rem;
-            color: var(--text-dark);
-            margin: 8px 0 14px 0;
-            line-height: 1.15;
-        }
-
-        .cream-grid {
-            display: grid;
-            grid-template-columns: 220px 1fr 380px;
-            gap: 36px;
-            align-items: center;
-        }
-
-        .stamp-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .circular-stamp {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            border: 2px dashed var(--accent-copper);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            animation: rotateStamp 35s linear infinite;
-        }
-
-        @keyframes rotateStamp {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .stamp-text {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            font-family: var(--font-title);
-            font-size: 0.65rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            fill: var(--text-dark);
-        }
-
-        .stamp-center {
-            font-family: var(--font-title);
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--accent-copper);
-            text-align: center;
-            line-height: 1.1;
-        }
-
-        .story-content {
-            background: rgba(255, 255, 255, 0.5);
-            padding: 34px;
-            border-radius: 18px;
-            border: 1px solid rgba(184, 101, 34, 0.15);
-        }
-
-        .story-content h3 {
-            font-family: var(--font-title);
-            font-size: 2rem;
-            color: var(--text-dark);
-            margin-bottom: 12px;
-        }
-
-        .story-content p {
-            color: #4A3A34;
-            font-size: 1.02rem;
-            margin-bottom: 18px;
-            line-height: 1.75;
-        }
-
-        .story-quote {
-            font-family: var(--font-title);
-            font-size: 1.25rem;
-            color: var(--accent-copper);
-            font-style: italic;
-            border-left: 3px solid var(--accent-copper);
-            padding-left: 16px;
-            margin-top: 15px;
-        }
-
-        .feature-img-card {
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(42, 31, 27, 0.12);
-            height: 380px;
-        }
-
-        .feature-img-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .feature-img-card { border-radius: 18px; overflow: hidden; box-shadow: 0 15px 35px rgba(42, 31, 27, 0.12); height: 380px; }
+        .feature-img-card img { width: 100%; height: 100%; object-fit: cover; }
 
         /* --- CATALOG SECTION --- */
-        .catalog-section {
-            padding: 90px 4%;
-            background-color: var(--bg-dark);
-        }
+        .catalog-section { padding: 90px 4%; background-color: var(--bg-dark); }
+        .section-header-flex { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; flex-wrap: wrap; gap: 20px; }
+        .section-title-group h2 { font-family: var(--font-title); font-size: 3.2rem; color: var(--text-light); line-height: 1.1; }
+        .section-title-group p { color: var(--text-muted); font-size: 1.05rem; margin-top: 6px; }
 
-        .section-header-flex {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .section-title-group h2 {
-            font-family: var(--font-title);
-            font-size: 3.2rem;
-            color: var(--text-light);
-            line-height: 1.1;
-        }
-
-        .section-title-group p {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            margin-top: 6px;
-        }
-
-        .category-filters {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
+        .category-filters { display: flex; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
         .filter-btn {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(212, 140, 70, 0.2);
-            color: var(--text-muted);
-            padding: 10px 24px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.88rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(212, 140, 70, 0.2); color: var(--text-muted);
+            padding: 10px 24px; border-radius: 30px; cursor: pointer; font-size: 0.88rem; font-weight: 500; transition: all 0.3s ease;
         }
+        .filter-btn.active, .filter-btn:hover { background: var(--accent-gold); color: var(--bg-dark); border-color: var(--accent-gold); font-weight: 700; }
 
-        .filter-btn.active, .filter-btn:hover {
-            background: var(--accent-gold);
-            color: var(--bg-dark);
-            border-color: var(--accent-gold);
-            font-weight: 700;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 28px;
-        }
-
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px; }
         .product-card {
-            background: var(--bg-dark-card);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 20px;
-            padding: 20px;
-            transition: all 0.35s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
+            background: var(--bg-dark-card); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 20px;
+            padding: 20px; transition: all 0.35s ease; display: flex; flex-direction: column; justify-content: space-between; position: relative;
         }
+        .product-card:hover { transform: translateY(-8px); border-color: rgba(212, 140, 70, 0.45); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8); }
 
-        .product-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(212, 140, 70, 0.45);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
-        }
-
-        .product-img-wrapper {
-            height: 240px;
-            width: 100%;
-            border-radius: 14px;
-            overflow: hidden;
-            margin-bottom: 16px;
-            position: relative;
-            cursor: pointer;
-        }
-
+        .product-img-wrapper { height: 240px; width: 100%; border-radius: 14px; overflow: hidden; margin-bottom: 16px; position: relative; cursor: pointer; }
         .fav-heart-btn {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: rgba(10, 8, 7, 0.75);
-            color: var(--text-muted);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 5;
-            transition: all 0.3s ease;
+            position: absolute; top: 12px; left: 12px; background: rgba(10, 8, 7, 0.75); color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.1); width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5; transition: all 0.3s ease;
         }
+        .fav-heart-btn.active, .fav-heart-btn:hover { color: #FF5A5A; background: rgba(10, 8, 7, 0.95); }
+        .details-hint-tag { position: absolute; top: 12px; right: 12px; background: rgba(10, 8, 7, 0.75); color: var(--accent-gold-bright); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; backdrop-filter: blur(4px); border: 1px solid rgba(212, 140, 70, 0.3); }
 
-        .fav-heart-btn.active, .fav-heart-btn:hover {
-            color: #FF5A5A;
-            background: rgba(10, 8, 7, 0.95);
-        }
-
-        .details-hint-tag {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(10, 8, 7, 0.75);
-            color: var(--accent-gold-bright);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(212, 140, 70, 0.3);
-        }
-
-        .product-title {
-            font-family: var(--font-title);
-            font-size: 1.45rem;
-            margin-bottom: 6px;
-            color: var(--text-light);
-            cursor: pointer;
-        }
-
-        .product-desc {
-            color: var(--text-muted);
-            font-size: 0.88rem;
-            margin-bottom: 16px;
-            flex-grow: 1;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .product-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-
-        .product-price {
-            font-family: var(--font-title);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-gold-bright);
-        }
-
-        .add-cart-btn {
-            background: var(--accent-gold);
-            color: var(--bg-dark);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .add-cart-btn:hover {
-            background: var(--accent-gold-bright);
-            transform: scale(1.08);
-        }
+        .product-title { font-family: var(--font-title); font-size: 1.45rem; margin-bottom: 6px; color: var(--text-light); cursor: pointer; }
+        .product-desc { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .product-price { font-family: var(--font-title); font-size: 1.5rem; font-weight: 700; color: var(--accent-gold-bright); }
+        .add-cart-btn { background: var(--accent-gold); color: var(--bg-dark); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; }
+        .add-cart-btn:hover { background: var(--accent-gold-bright); transform: scale(1.08); }
 
         /* --- CONTACT SECTION --- */
-        .contact-section {
-            padding: 80px 4%;
-            background: #060504;
-            border-top: 1px solid rgba(212, 140, 70, 0.15);
-        }
+        .contact-section { padding: 80px 4%; background: #060504; border-top: 1px solid rgba(212, 140, 70, 0.15); }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .contact-info-box h3 { font-family: var(--font-title); font-size: 2.6rem; color: var(--text-light); margin-bottom: 14px; }
+        .contact-info-box p { color: var(--text-muted); margin-bottom: 28px; }
+        .contact-details-list { display: flex; flex-direction: column; gap: 16px; }
+        .contact-detail-item { display: flex; align-items: center; gap: 16px; background: rgba(255, 255, 255, 0.02); padding: 16px 20px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .contact-icon { width: 44px; height: 44px; border-radius: 50%; background: rgba(212, 140, 70, 0.15); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .contact-text-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .contact-text-value { font-size: 0.98rem; color: var(--text-light); font-weight: 600; }
 
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            align-items: center;
-        }
-
-        .contact-info-box h3 {
-            font-family: var(--font-title);
-            font-size: 2.6rem;
-            color: var(--text-light);
-            margin-bottom: 14px;
-        }
-
-        .contact-info-box p {
-            color: var(--text-muted);
-            margin-bottom: 28px;
-        }
-
-        .contact-details-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .contact-detail-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 16px 20px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .contact-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(212, 140, 70, 0.15);
-            color: var(--accent-gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-        }
-
-        .contact-text-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .contact-text-value {
-            font-size: 0.98rem;
-            color: var(--text-light);
-            font-weight: 600;
-        }
-
-        .contact-form {
-            background: var(--bg-dark-card);
-            padding: 34px;
-            border-radius: 20px;
-            border: 1px solid rgba(212, 140, 70, 0.2);
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 0.82rem;
-            color: var(--accent-gold);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 13px;
-            background: rgba(10, 8, 7, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            color: var(--text-light);
-            font-family: var(--font-body);
-            outline: none;
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: var(--accent-gold);
-            color: var(--bg-dark);
-            border: none;
-            padding: 15px;
-            border-radius: 30px;
-            font-weight: 700;
-            cursor: pointer;
-        }
+        .contact-form { background: var(--bg-dark-card); padding: 34px; border-radius: 20px; border: 1px solid rgba(212, 140, 70, 0.2); }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 6px; font-size: 0.82rem; color: var(--accent-gold); letter-spacing: 1px; text-transform: uppercase; }
+        .form-group input, .form-group textarea { width: 100%; padding: 13px; background: rgba(10, 8, 7, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; color: var(--text-light); font-family: var(--font-body); outline: none; }
+        .submit-btn { width: 100%; background: var(--accent-gold); color: var(--bg-dark); border: none; padding: 15px; border-radius: 30px; font-weight: 700; cursor: pointer; }
 
         /* --- MODALS & DIALOGS --- */
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.88);
-            backdrop-filter: blur(10px);
-            z-index: 500;
-            display: flex; align-items: center; justify-content: center;
-            padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(10px); z-index: 500;
+            display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
         }
-
         .modal-overlay.active { opacity: 1; pointer-events: all; }
 
-        .modal-content {
-            background: var(--bg-dark-card);
-            border: 1px solid rgba(212, 140, 70, 0.35);
-            border-radius: 24px; max-width: 880px; width: 100%; max-height: 90vh;
-            overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 32px; position: relative;
-        }
+        .modal-content { background: var(--bg-dark-card); border: 1px solid rgba(212, 140, 70, 0.35); border-radius: 24px; max-width: 880px; width: 100%; max-height: 90vh; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 32px; position: relative; }
+        .close-modal-btn { position: absolute; top: 20px; right: 20px; background: rgba(255, 255, 255, 0.08); border: none; color: var(--text-muted); width: 36px; height: 36px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; }
 
-        .close-modal-btn {
-            position: absolute; top: 20px; right: 20px;
-            background: rgba(255, 255, 255, 0.08); border: none; color: var(--text-muted);
-            width: 36px; height: 36px; border-radius: 50%; font-size: 1.1rem; cursor: pointer;
-        }
-
-        .custom-dialog-box {
-            background: var(--bg-dark-card);
-            border: 1px solid rgba(212, 140, 70, 0.4);
-            border-radius: 20px; padding: 32px; width: 100%; max-width: 440px;
-        }
-
-        .admin-dashboard-box {
-            background: var(--bg-dark-card);
-            border: 1px solid rgba(212, 140, 70, 0.4);
-            border-radius: 24px; padding: 32px; width: 100%; max-width: 850px; max-height: 85vh; overflow-y: auto;
-        }
+        .custom-dialog-box { background: var(--bg-dark-card); border: 1px solid rgba(212, 140, 70, 0.4); border-radius: 20px; padding: 32px; width: 100%; max-width: 440px; }
+        .admin-dashboard-box { background: var(--bg-dark-card); border: 1px solid rgba(212, 140, 70, 0.4); border-radius: 24px; padding: 32px; width: 100%; max-width: 850px; max-height: 85vh; overflow-y: auto; }
 
         .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         .admin-table th, .admin-table td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.88rem; }
@@ -902,11 +238,7 @@
         .btn-del { background: #FF5A5A; color: #FFF; }
 
         /* --- CART DRAWER --- */
-        .cart-drawer {
-            position: fixed; top: 0; right: -420px; width: 400px; height: 100vh;
-            background: var(--bg-dark-card); border-left: 1px solid rgba(255, 255, 255, 0.08);
-            z-index: 450; padding: 30px; display: flex; flex-direction: column; transition: right 0.4s ease;
-        }
+        .cart-drawer { position: fixed; top: 0; right: -420px; width: 400px; height: 100vh; background: var(--bg-dark-card); border-left: 1px solid rgba(255, 255, 255, 0.08); z-index: 450; padding: 30px; display: flex; flex-direction: column; transition: right 0.4s ease; }
         .cart-drawer.open { right: 0; }
         .cart-items { flex-grow: 1; overflow-y: auto; padding: 20px 0; display: flex; flex-direction: column; gap: 16px; }
         .cart-item { display: flex; gap: 14px; align-items: center; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 12px; }
@@ -970,7 +302,7 @@
 
             <div class="nav-actions">
                 <button class="admin-login-btn" onclick="openAuthModal()" id="userAuthNavBtn">
-                    <i class="fa-solid fa-user"></i> Login / Register
+                    <i class="fa-solid fa-user"></i> Account
                 </button>
 
                 <button class="admin-login-btn" onclick="openAdminLoginModal()">
@@ -1211,31 +543,51 @@
         </div>
     </div>
 
-    <!-- CUSTOMER AUTH & CART DRAWERS -->
+    <!-- CUSTOMER AUTH (REGISTER & LOGIN SEPARATE MODALS) -->
     <div class="modal-overlay" id="customerAuthModal">
         <div class="custom-dialog-box">
-            <h3 style="font-family:var(--font-title); font-size:1.6rem; color:var(--accent-gold-bright); margin-bottom:14px;">Customer Account</h3>
-            <div id="authFormsContainer">
-                <div class="form-group"><label>Full Name</label><input type="text" id="custName" placeholder="Sarah Miller"></div>
-                <div class="form-group"><label>Email Address</label><input type="email" id="custEmail" placeholder="sarah@example.com"></div>
-                <button class="submit-btn" onclick="registerOrLoginCustomer()">Access Account</button>
+            <div id="authChoiceView">
+                <h3 style="font-family:var(--font-title); font-size:1.6rem; color:var(--accent-gold-bright); margin-bottom:14px;">Customer Portal</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">Please select an option to continue.</p>
+                <button class="submit-btn" style="margin-bottom:12px;" onclick="switchAuthView('register')">Create New Account (Sign Up)</button>
+                <button class="submit-btn" style="background:transparent; border:1px solid var(--accent-gold); color:var(--accent-gold-bright);" onclick="switchAuthView('login')">Already have an account? Sign In</button>
             </div>
+
+            <!-- REGISTER FORM -->
+            <div id="registerView" style="display:none;">
+                <h3 style="font-family:var(--font-title); font-size:1.5rem; color:var(--accent-gold-bright); margin-bottom:14px;">Create Account</h3>
+                <div class="form-group"><label>Full Name (Min 4 chars)</label><input type="text" id="regName" placeholder="Sarah Miller"></div>
+                <div class="form-group"><label>Email Address</label><input type="email" id="regEmail" placeholder="sarah@example.com"></div>
+                <div class="form-group"><label>Password (Min 6 chars/digits)</label><input type="password" id="regPass" placeholder="******"></div>
+                <button class="submit-btn" onclick="registerCustomer()">Register Account</button>
+                <button style="background:none; border:none; color:var(--text-muted); margin-top:12px; cursor:pointer; width:100%; text-align:center;" onclick="switchAuthView('choice')">&larr; Back</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div id="loginView" style="display:none;">
+                <h3 style="font-family:var(--font-title); font-size:1.5rem; color:var(--accent-gold-bright); margin-bottom:14px;">Sign In</h3>
+                <div class="form-group"><label>Email Address</label><input type="email" id="loginEmail" placeholder="sarah@example.com"></div>
+                <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="******"></div>
+                <button class="submit-btn" onclick="loginCustomer()">Sign In</button>
+                <button style="background:none; border:none; color:var(--text-muted); margin-top:12px; cursor:pointer; width:100%; text-align:center;" onclick="switchAuthView('choice')">&larr; Back</button>
+            </div>
+
+            <!-- PROFILE VIEW (WHEN LOGGED IN) -->
             <div id="customerProfileContainer" style="display:none;">
-                <h4 style="color:var(--accent-gold);" id="welcomeCustName"></h4>
+                <h3 style="font-family:var(--font-title); color:var(--accent-gold-bright); margin-bottom:10px;">Welcome Back!</h3>
+                <h4 style="color:var(--text-light); margin-bottom:16px;" id="welcomeCustName"></h4>
                 <div style="margin:16px 0;">
-                    <h5 style="color:var(--text-light); margin-bottom:6px;">❤️ Favorite Products:</h5>
+                    <h5 style="color:var(--accent-gold); margin-bottom:6px;">❤️ Favorite Products:</h5>
                     <div id="custFavList" style="font-size:0.88rem; color:var(--text-muted);">No favorites added yet.</div>
                 </div>
-                <div style="margin:16px 0;">
-                    <h5 style="color:var(--text-light); margin-bottom:6px;">📜 Order History:</h5>
-                    <div id="custOrderHistory" style="font-size:0.88rem; color:var(--text-muted);">No past orders found.</div>
-                </div>
-                <button class="submit-btn" style="background:#444;" onclick="logoutCustomer()">Logout</button>
+                <button class="submit-btn" style="background:#444; color:#fff;" onclick="logoutCustomer()">Sign Out</button>
             </div>
-            <button style="background:none; border:none; color:var(--text-muted); margin-top:12px; cursor:pointer; width:100%; text-align:center;" onclick="closeModal('customerAuthModal')">Close</button>
+
+            <button style="background:none; border:none; color:var(--text-muted); margin-top:16px; cursor:pointer; width:100%; text-align:center;" onclick="closeModal('customerAuthModal')">Close Window</button>
         </div>
     </div>
 
+    <!-- CART DRAWER -->
     <div class="cart-drawer" id="cartDrawer">
         <div class="cart-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:15px;">
             <h3>Shopping Bag</h3>
@@ -1251,7 +603,7 @@
         </div>
     </div>
 
-    <div class="toast" id="toast">Item synced with cloud!</div>
+    <div class="toast" id="toast">Synced successfully!</div>
 
     <script>
         const SUPABASE_URL = 'https://gqezawahcunhctdnuxps.supabase.co';
@@ -1262,19 +614,17 @@
         let products = [];
         let cart = [];
         let favs = [];
-        let orderHistory = [];
-        let currentSlideIndex = 0;
+        let loggedInUser = null;
 
         window.onload = async function() {
             await fetchCloudData();
+            checkSavedSession();
         };
 
         async function fetchCloudData() {
             try {
-                // Fetch Products
-                let { data: prodData, error: prodErr } = await _supabase.from('products').select('*');
+                let { data: prodData } = await _supabase.from('products').select('*');
                 if (!prodData || prodData.length === 0) {
-                    // Seed default 23 products if empty
                     const defaults = getFullDefaultProducts();
                     await _supabase.from('products').insert(defaults.map(({ id, ...rest }) => rest));
                     let { data: newProd } = await _supabase.from('products').select('*');
@@ -1283,8 +633,7 @@
                     products = prodData;
                 }
 
-                // Fetch Hero Slides
-                let { data: slideData, error: slideErr } = await _supabase.from('hero_slides').select('*');
+                let { data: slideData } = await _supabase.from('hero_slides').select('*');
                 if (!slideData || slideData.length === 0) {
                     const defaultSlides = getFullDefaultSlides();
                     await _supabase.from('hero_slides').insert(defaultSlides);
@@ -1309,51 +658,26 @@
             return [
                 { name: "Chocolate Cherry Sourdough", category: "sourdough", price: 14.50, image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=800", desc: "Rich dark chocolate chips blended with tart dried cherries in a dark cocoa sourdough loaf.", ingredients: "Organic Flour, Dark Cocoa, 70% Dark Chocolate, Tart Cherries, Sourdough Culture." },
                 { name: "Country Golden Boule", category: "sourdough", price: 11.00, image: "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=800", desc: "Our signature 36-hour slow ferment whole wheat sourdough with open airy crumb.", ingredients: "Stoneground Whole Wheat Flour, Unbleached Hard Red Wheat, Wild Starter, Sea Salt." },
-                { name: "Rosemary Maldon Focaccia", category: "sourdough", price: 12.00, image: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=800", desc: "Extra virgin olive oil drenched sourdough focaccia with fresh rosemary and sea salt flakes.", ingredients: "Organic Flour, Cold-Pressed EVOO, Fresh Rosemary, Maldon Sea Salt." },
-                { name: "Butter French Croissant", category: "viennoiserie", price: 5.50, image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=800", desc: "Classic 81-layer laminated French croissant made with pure European cultured butter.", ingredients: "Unbleached Pastry Flour, European Butter 84%, Whole Milk, Cane Sugar." },
-                { name: "Almond Cream Croissant", category: "viennoiserie", price: 6.75, image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800", desc: "Twice-baked butter croissant filled with luscious almond frangipane and toasted almonds.", ingredients: "Butter Croissant, Almond Meal, Pure Butter, Eggs, Sliced Almonds." },
-                { name: "Pain au Chocolat", category: "viennoiserie", price: 6.00, image: "https://images.unsplash.com/photo-1530610476181-d83430b64dcd?w=800", desc: "Crisp flaky pastry surrounding two batons of premium French dark chocolate.", ingredients: "French Pastry Flour, Butter, Valrhona 64% Dark Chocolate Batons." },
-                { name: "Cinnamon Cardamom Buns", category: "specialty", price: 5.75, image: "https://images.unsplash.com/photo-1509365465985-25d11c17e812?w=800", desc: "Aromatic Scandinavian spiced buns swirled with Ceylon cinnamon and cardamom.", ingredients: "Enriched Dough, Ceylon Cinnamon, Green Cardamom, Butter, Vanilla Glaze." },
-                { name: "Seeded Rye Sourdough", category: "sourdough", price: 12.50, image: "https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?w=800", desc: "Dense aromatic dark rye packed with toasted pumpkin, flax, and sunflower seeds.", ingredients: "Dark Rye Flour, Toasted Pumpkin Seeds, Sunflower Seeds, Flaxseeds, Wild Yeast." },
-                { name: "Classic French Baguette", category: "sourdough", price: 4.75, image: "https://images.unsplash.com/photo-1597079910443-60c43fc4f729?w=800", desc: "Crispy caramelized crust with an open honeycombed wild yeast crumb.", ingredients: "Unbleached French Flour, Water, Wild Culture, Sea Salt." },
-                { name: "Pistachio Danish", category: "viennoiserie", price: 6.50, image: "https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=800", desc: "Silky pistachio cream layered over flaky all-butter Danish pastry.", ingredients: "Laminated Dough, Sicilian Pistachios, Butter, Sugar, Milk." },
-                { name: "Honey Oat Sourdough", category: "sourdough", price: 11.50, image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800", desc: "Slightly sweet organic honey blended with rolled oats in a wholesome sourdough boule.", ingredients: "Stoneground Wheat, Organic Honey, Rolled Oats, Sourdough Starter." },
-                { name: "Sourdough Pretzel Bites", category: "specialty", price: 8.00, image: "https://images.unsplash.com/photo-1621252171229-7988f3412552?w=800", desc: "Chewy bite-sized sourdough pretzels boiled and topped with coarse salt.", ingredients: "Wheat Flour, Water, Lye Bath, Coarse Sea Salt, Butter." },
-                { name: "Cranberry Pecan Loaf", category: "sourdough", price: 13.50, image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=800", desc: "Tart dried cranberries and toasted pecans studded throughout a whole grain wild sourdough.", ingredients: "Whole Wheat, Dried Cranberries, Pecans, Wild Starter, Sea Salt." },
-                { name: "Traditional Brioche Loaf", category: "viennoiserie", price: 9.50, image: "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=800", desc: "Rich golden eggy brioche bread baked to soft fluffy perfection.", ingredients: "Eggs, European Butter, Flour, Milk, Sugar, Yeast." },
-                { name: "Lemon Raspberry Scone", category: "specialty", price: 4.50, image: "https://images.unsplash.com/photo-1587314168485-3236d6710814?w=800", desc: "Buttery crumbly scone infused with fresh lemon zest and sweet red raspberries.", ingredients: "Pastry Flour, Heavy Cream, Fresh Raspberries, Lemon Zest, Butter." },
-                { name: "Blueberry Sourdough Muffin", category: "specialty", price: 4.75, image: "https://images.unsplash.com/photo-1607958996333-41aef7caef1c?w=800", desc: "Plump wild blueberries folded into a tender sourdough-fermented batter.", ingredients: "Flour, Wild Blueberries, Sourdough Discard, Butter, Cane Sugar." },
-                { name: "Garlic Confit Focaccia", category: "sourdough", price: 13.00, image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=800", desc: "Slow-roasted garlic cloves pressed into olive oil-rich artisanal focaccia.", ingredients: "Organic Flour, Garlic Confit, Olive Oil, Rosemary, Sea Salt." },
-                { name: "Triple Chocolate Cookie", category: "specialty", price: 3.75, image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=800", desc: "Chewy artisanal cookie packed with milk, dark, and white chocolate chunks.", ingredients: "Flour, Butter, Brown Sugar, Dark Chocolate, Milk Chocolate, White Chocolate." },
-                { name: "Caramel Pecan Cinnamon Roll", category: "specialty", price: 6.25, image: "https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?w=800", desc: "Giant soft cinnamon roll drenched in rich caramel and toasted pecans.", ingredients: "Enriched Dough, Cinnamon, Caramel Sauce, Pecans, Cream Cheese Frosting." },
-                { name: "Apple Galette", category: "specialty", price: 7.50, image: "https://images.unsplash.com/photo-1519869325930-281384150729?w=800", desc: "Rustic free-form pastry filled with spiced sliced apples and apricot glaze.", ingredients: "Puff Pastry, Fresh Apples, Cinnamon, Brown Sugar, Apricot Glaze." },
-                { name: "Jalapeno Cheddar Sourdough", category: "sourdough", price: 13.50, image: "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=800", desc: "Spicy fresh jalapenos and sharp aged cheddar folded into our signature sourdough.", ingredients: "Organic Flour, Cheddar Cheese, Jalapenos, Water, Wild Yeast." },
-                { name: "Sourdough English Muffins", category: "sourdough", price: 6.00, image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800", desc: "Nooks and crannies galore in these griddled fermented sourdough muffins.", ingredients: "Wheat Flour, Sourdough Culture, Milk, Butter, Cornmeal." },
-                { name: "Chocolate Babka", category: "specialty", price: 11.00, image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800", desc: "Lush brioche dough twisted with dark chocolate fudge ganache.", ingredients: "Brioche Dough, Dark Chocolate Ganache, Sugar Syrup, Butter." }
+                { name: "Rosemary Maldon Focaccia", category: "sourdough", price: 12.00, image: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=800", desc: "Extra virgin olive oil drenched sourdough focaccia with fresh rosemary and sea salt flakes.", ingredients: "Organic Flour, Cold-Pressed EVOO, Fresh Rosemary, Maldon Sea Salt." }
             ];
         }
 
         function getFullDefaultSlides() {
             return [
                 { title: "Chocolate Cherry Sourdough", description: "Rich Belgian dark chocolate chips blended with tart dried cherries in a dark cocoa long-fermented sourdough loaf.", image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?q=80&w=1200" },
-                { title: "Country Golden Boule", description: "Our signature 36-hour slow-ferment whole wheat sourdough with a deep golden blistered crust.", image: "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?q=80&w=1200" },
-                { title: "Artisanal Almond Croissant", description: "Twice-baked French butter croissant filled with silky almond frangipane cream.", image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=1200" },
-                { title: "Rosemary Sea Salt Focaccia", description: "Extra virgin olive oil drenched sourdough focaccia topped with fresh organic rosemary sprigs.", image: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?q=80&w=1200" }
+                { title: "Country Golden Boule", description: "Our signature 36-hour slow-ferment whole wheat sourdough with a deep golden blistered crust.", image: "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?q=80&w=1200" }
             ];
         }
 
         function initSlider() {
             const wrapper = document.getElementById('heroSliderWrapper');
             const dots = document.getElementById('sliderDots');
-            
             if(!heroSlides.length) return;
 
             wrapper.innerHTML = heroSlides.map((slide, idx) => `
                 <div class="slide-item ${idx === 0 ? 'active' : ''}">
                     <img src="${slide.image}" alt="${slide.title}">
-                    <div class="slide-overlay">
-                        <span class="slide-badge">Featured Bakery Selection</span>
-                    </div>
+                    <div class="slide-overlay"><span class="slide-badge">Featured Bakery Selection</span></div>
                 </div>
             `).join('');
 
@@ -1366,7 +690,6 @@
         }
 
         function goToSlide(idx) {
-            currentSlideIndex = idx;
             const slides = document.querySelectorAll('.slide-item');
             const dots = document.querySelectorAll('.dot');
             slides.forEach((s, i) => s.classList.toggle('active', i === idx));
@@ -1557,30 +880,108 @@
             }
         }
 
+        /* --- REAL CUSTOMER AUTH LOGIC --- */
         function openAuthModal() {
             document.getElementById('customerAuthModal').classList.add('active');
+            if (loggedInUser) {
+                switchAuthView('profile');
+            } else {
+                switchAuthView('choice');
+            }
         }
 
-        function registerOrLoginCustomer() {
-            const name = document.getElementById('custName').value;
-            if(!name) return alert("Please enter your name!");
-            document.getElementById('userAuthNavBtn').innerHTML = `<i class="fa-solid fa-user-check"></i> ${name}`;
-            document.getElementById('authFormsContainer').style.display = 'none';
-            document.getElementById('customerProfileContainer').style.display = 'block';
-            document.getElementById('welcomeCustName').textContent = `Welcome, ${name}`;
+        function switchAuthView(view) {
+            document.getElementById('authChoiceView').style.display = view === 'choice' ? 'block' : 'none';
+            document.getElementById('registerView').style.display = view === 'register' ? 'block' : 'none';
+            document.getElementById('loginView').style.display = view === 'login' ? 'block' : 'none';
+            document.getElementById('customerProfileContainer').style.display = view === 'profile' ? 'block' : 'none';
+        }
+
+        async function registerCustomer() {
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPass').value.trim();
+
+            if (name.length < 4) {
+                alert("Name must be at least 4 characters long!");
+                return;
+            }
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters or digits long!");
+                return;
+            }
+            if (!email) {
+                alert("Please enter a valid email!");
+                return;
+            }
+
+            // Insert into Supabase customers table
+            const { data, error } = await _supabase.from('customers').insert([{ name, email, password }]).select();
+            if (error) {
+                alert("Registration failed or email already exists!");
+                console.error(error);
+                return;
+            }
+
+            alert("Account created successfully! You can now sign in.");
+            switchAuthView('login');
+        }
+
+        async function loginCustomer() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPass').value.trim();
+
+            if (!email || !password) {
+                alert("Please fill in all fields!");
+                return;
+            }
+
+            const { data, error } = await _supabase.from('customers').select('*').eq('email', email).eq('password', password).single();
+            if (error || !data) {
+                alert("Invalid email or password!");
+                return;
+            }
+
+            loggedInUser = data;
+            localStorage.setItem('fermented_user', JSON.stringify(data));
+            updateUIAfterLogin();
+            closeModal('customerAuthModal');
+            showToast(`Welcome back, ${data.name}!`);
+        }
+
+        function checkSavedSession() {
+            const saved = localStorage.getItem('fermented_user');
+            if (saved) {
+                loggedInUser = JSON.parse(saved);
+                updateUIAfterLogin();
+            }
+        }
+
+        function updateUIAfterLogin() {
+            if (loggedInUser) {
+                document.getElementById('userAuthNavBtn').innerHTML = `<i class="fa-solid fa-user-check"></i> ${loggedInUser.name}`;
+                document.getElementById('welcomeCustName').textContent = loggedInUser.name + " (" + loggedInUser.email + ")";
+            }
+        }
+
+        function logoutCustomer() {
+            loggedInUser = null;
+            localStorage.removeItem('fermented_user');
+            document.getElementById('userAuthNavBtn').innerHTML = `<i class="fa-solid fa-user"></i> Account`;
+            switchAuthView('choice');
+            showToast("Signed out successfully.");
         }
 
         function toggleFav(id) {
+            if (!loggedInUser) {
+                alert("Please sign in to add favorites!");
+                openAuthModal();
+                return;
+            }
             if(favs.includes(id)) favs = favs.filter(f => f !== id);
             else favs.push(id);
             renderProducts(products);
             showToast(favs.includes(id) ? "Added to Wishlist!" : "Removed from Wishlist");
-        }
-
-        function logoutCustomer() {
-            document.getElementById('userAuthNavBtn').innerHTML = `<i class="fa-solid fa-user"></i> Login / Register`;
-            document.getElementById('authFormsContainer').style.display = 'block';
-            document.getElementById('customerProfileContainer').style.display = 'none';
         }
 
         function addToCart(id) {
