@@ -43,7 +43,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             position: fixed;
             top: 0;
             left: 0;
@@ -60,13 +60,14 @@
             align-items: center;
             gap: 6px;
             letter-spacing: 0.5px;
+            font-family: var(--font-body);
         }
 
         .rotating-quotes-container {
             flex-grow: 1;
             text-align: center;
             overflow: hidden;
-            height: 24px;
+            height: 28px;
             position: relative;
         }
 
@@ -79,8 +80,9 @@
             transition: opacity 0.8s ease-in-out;
             color: var(--text-light);
             font-family: var(--font-title);
-            font-size: 1.05rem;
-            letter-spacing: 1px;
+            font-size: 1.2rem;
+            letter-spacing: 1.2px;
+            font-weight: 600;
         }
 
         .quote-slide-item.active {
@@ -94,7 +96,7 @@
 
         /* --- NAVIGATION --- */
         nav {
-            position: fixed; top: 44px; left: 0; width: 100%; z-index: 100;
+            position: fixed; top: 48px; left: 0; width: 100%; z-index: 100;
             padding: 14px 4%; display: flex; justify-content: space-between; align-items: center;
             background: rgba(10, 8, 7, 0.92); backdrop-filter: blur(14px);
             border-bottom: 1px solid rgba(212, 140, 70, 0.15);
@@ -282,7 +284,7 @@
         .modal-content { background: var(--bg-dark-card); border: 1px solid rgba(212, 140, 70, 0.35); border-radius: 24px; max-width: 880px; width: 100%; max-height: 90vh; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 32px; position: relative; }
         .close-modal-btn { position: absolute; top: 20px; right: 20px; background: rgba(255, 255, 255, 0.08); border: none; color: var(--text-muted); width: 36px; height: 36px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; }
 
-        .custom-dialog-box { background: var(--bg-dark-card); border: 1px solid rgba(212, 140, 70, 0.4); border-radius: 20px; padding: 32px; width: 100%; max-width: 440px; }
+        .custom-dialog-box { background: var(--bg-dark-card); border: 1px solid rgba(212, 140, 70, 0.4); border-radius: 20px; padding: 32px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
         .admin-dashboard-box { background: var(--bg-dark-card); border: 1px solid rgba(212, 140, 70, 0.4); border-radius: 24px; padding: 32px; width: 100%; max-width: 850px; max-height: 85vh; overflow-y: auto; }
 
         .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
@@ -308,9 +310,9 @@
 
         @media screen and (max-width: 992px) {
             .top-announcement-bar { justify-content: center; text-align: center; font-size: 0.75rem; }
-            nav { top: 70px; padding: 12px 5%; flex-direction: column; gap: 12px; }
+            nav { top: 74px; padding: 12px 5%; flex-direction: column; gap: 12px; }
             .nav-right-group { width: 100%; flex-direction: column; gap: 12px; align-items: center; }
-            .hero { grid-template-columns: 1fr; padding: 180px 5% 40px 5%; text-align: center; }
+            .hero { grid-template-columns: 1fr; padding: 190px 5% 40px 5%; text-align: center; }
             .hero-text { max-width: 100%; display: flex; flex-direction: column; align-items: center; }
             .hero-title { font-size: 2.8rem; }
             .hero-slider-container { height: 320px; }
@@ -631,7 +633,7 @@
         </div>
     </div>
 
-    <!-- UNIFIED CUSTOMER / ADMIN AUTH MODAL -->
+    <!-- UNIFIED CUSTOMER / ADMIN AUTH & PROFILE MODAL -->
     <div class="modal-overlay" id="customerAuthModal">
         <div class="custom-dialog-box">
             <div id="authChoiceView">
@@ -660,11 +662,31 @@
                 <button style="background:none; border:none; color:var(--text-muted); margin-top:12px; cursor:pointer; width:100%; text-align:center;" onclick="switchAuthView('choice')">&larr; Back</button>
             </div>
 
-            <!-- PROFILE VIEW -->
+            <!-- PROFILE VIEW (WITH PASSWORD CHANGE, PURCHASED PRODUCTS & WISHLIST) -->
             <div id="customerProfileContainer" style="display:none;">
-                <h3 style="font-family:var(--font-title); color:var(--accent-gold-bright); margin-bottom:10px;">Welcome Back!</h3>
-                <h4 style="color:var(--text-light); margin-bottom:16px;" id="welcomeCustName"></h4>
-                <button class="submit-btn" style="background:#444; color:#fff;" onclick="logoutUser()">Sign Out</button>
+                <h3 style="font-family:var(--font-title); color:var(--accent-gold-bright); margin-bottom:6px;">Welcome Back!</h3>
+                <h4 style="color:var(--text-light); font-size: 1.2rem; margin-bottom:16px;" id="welcomeCustName"></h4>
+                
+                <!-- Wishlist Section -->
+                <div style="margin:14px 0; background:rgba(255,255,255,0.02); padding:12px; border-radius:12px; border:1px solid rgba(212,140,70,0.2);">
+                    <h5 style="color:var(--accent-gold); margin-bottom:6px;"><i class="fa-solid fa-heart"></i> My Wishlist (المفضلة)</h5>
+                    <div id="profileWishlist" style="font-size:0.88rem; color:var(--text-muted); max-height:100px; overflow-y:auto;">No favorites added yet.</div>
+                </div>
+
+                <!-- Purchased Products / Orders Section -->
+                <div style="margin:14px 0; background:rgba(255,255,255,0.02); padding:12px; border-radius:12px; border:1px solid rgba(212,140,70,0.2);">
+                    <h5 style="color:var(--accent-gold); margin-bottom:6px;"><i class="fa-solid fa-bag-shopping"></i> My Purchased Orders (المنتجات المشتراة)</h5>
+                    <div id="profileOrdersList" style="font-size:0.88rem; color:var(--text-muted); max-height:100px; overflow-y:auto;">No past orders found.</div>
+                </div>
+
+                <!-- Change Password Section -->
+                <div style="margin:14px 0; background:rgba(255,255,255,0.02); padding:12px; border-radius:12px; border:1px solid rgba(212,140,70,0.2);">
+                    <h5 style="color:var(--accent-gold); margin-bottom:6px;"><i class="fa-solid fa-key"></i> Change Password (تغيير كلمة المرور)</h5>
+                    <div class="form-group" style="margin-bottom:8px;"><input type="password" id="newPasswordInput" placeholder="New password (min 6 chars)"></div>
+                    <button class="submit-btn" style="padding:8px; font-size:0.85rem;" onclick="updateCustomerPassword()">Update Password</button>
+                </div>
+
+                <button class="submit-btn" style="background:#444; color:#fff; margin-top:10px;" onclick="logoutUser()">Sign Out</button>
             </div>
 
             <button style="background:none; border:none; color:var(--text-muted); margin-top:16px; cursor:pointer; width:100%; text-align:center;" onclick="closeModal('customerAuthModal')">Close Window</button>
@@ -706,7 +728,6 @@
             initQuotesSlider();
         };
 
-        // Rotating Quotes Ticker Bar (Changes every 5 seconds)
         function initQuotesSlider() {
             const quotes = document.querySelectorAll('.quote-slide-item');
             if(!quotes.length) return;
@@ -971,11 +992,15 @@
             }
         }
 
-        /* --- AUTH LOGIC --- */
+        /* --- AUTH & PROFILE LOGIC --- */
         function openAuthModal() {
             document.getElementById('customerAuthModal').classList.add('active');
-            if (loggedInUser) switchAuthView('profile');
-            else switchAuthView('choice');
+            if (loggedInUser) {
+                switchAuthView('profile');
+                loadUserProfileData();
+            } else {
+                switchAuthView('choice');
+            }
         }
 
         function switchAuthView(view) {
@@ -997,7 +1022,7 @@
 
             const { data, error } = await _supabase.from('customers').insert([{ name, email, password }]).select();
             if (error) {
-                alert("Registration failed!");
+                alert("Registration failed or email exists!");
                 return;
             }
 
@@ -1034,6 +1059,44 @@
             alert("Invalid credentials!");
         }
 
+        async function loadUserProfileData() {
+            if (!loggedInUser || loggedInUser.role === 'admin') return;
+            document.getElementById('welcomeCustName').textContent = loggedInUser.name;
+
+            // Load Wishlist items
+            const wishlistContainer = document.getElementById('profileWishlist');
+            if (favs.length > 0) {
+                const favProducts = products.filter(p => favs.includes(p.id));
+                wishlistContainer.innerHTML = favProducts.map(fp => `<div style="padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.05);">${fp.name} - $${fp.price}</div>`).join('');
+            } else {
+                wishlistContainer.innerHTML = "No favorites added yet.";
+            }
+
+            // Load Customer Orders
+            const ordersContainer = document.getElementById('profileOrdersList');
+            let { data: myOrders } = await _supabase.from('orders').select('*').eq('customer_name', loggedInUser.name);
+            if (myOrders && myOrders.length > 0) {
+                ordersContainer.innerHTML = myOrders.map(o => `<div style="padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.05);">Order Total: $${o.total_amount} (${o.status})</div>`).join('');
+            } else {
+                ordersContainer.innerHTML = "No past orders found.";
+            }
+        }
+
+        async function updateCustomerPassword() {
+            const newPass = document.getElementById('newPasswordInput').value.trim();
+            if (newPass.length < 6) {
+                alert("Password must be at least 6 characters!");
+                return;
+            }
+            const { error } = await _supabase.from('customers').update({ password: newPass }).eq('name', loggedInUser.name);
+            if (error) {
+                alert("Failed to update password.");
+                return;
+            }
+            alert("Password updated successfully!");
+            document.getElementById('newPasswordInput').value = "";
+        }
+
         function checkSavedSession() {
             const saved = localStorage.getItem('fermented_user');
             if (saved) {
@@ -1045,7 +1108,6 @@
         function updateUIAfterLogin() {
             if (loggedInUser) {
                 document.getElementById('userAuthNavBtn').innerHTML = `<i class="fa-solid fa-user-check"></i> ${loggedInUser.name}`;
-                document.getElementById('welcomeCustName').textContent = loggedInUser.name;
             }
         }
 
@@ -1092,7 +1154,7 @@
             document.getElementById('cartTotalSum').textContent = `$${total.toFixed(2)}`;
         }
 
-        /* --- CHECKOUT & ORDERS LOGIC --- */
+        /* --- CHECKOUT & ORDERS LOGIC WITH EMAIL NOTIFICATION LINK --- */
         function openCheckoutModal() {
             if (!cart.length) return alert("Your cart is empty!");
             closeModal('cartDrawer');
@@ -1113,6 +1175,7 @@
             }
 
             const total_amount = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
+            const itemsListSummary = cart.map(i => i.name).join(', ');
 
             const { error } = await _supabase.from('orders').insert([{
                 customer_name,
@@ -1131,7 +1194,13 @@
             cart = [];
             updateCart();
             closeModal('checkoutFormModal');
-            alert(`Thank you, ${customer_name}! Your order has been placed successfully.\n\nOur team will contact you at ${phone} to confirm Washington State delivery and Cash on Delivery payment.`);
+
+            // فتح برنامج البريد تلقائياً لإرسال تفاصيل الطلب بريدك
+            const emailSubject = encodeURIComponent(`New Order from ${customer_name} - The Fermented Table`);
+            const emailBody = encodeURIComponent(`Hello Jasmin,\n\nA new order has been placed on your website:\n\nCustomer: ${customer_name}\nPhone: ${phone}\nAddress: ${address}\nItems: ${itemsListSummary}\nTotal: $${total_amount.toFixed(2)}\n\nPayment Method: Cash on Delivery (Washington State)`);
+            window.location.href = `mailto:TheFermentedTableLLC@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+
+            alert(`Thank you, ${customer_name}! Your order has been saved successfully.\n\nAn email draft has been generated to notify TheFermentedTableLLC@gmail.com instantly. We will reach out at ${phone} to confirm your Washington State delivery.`);
         }
 
         function closeModal(id) {
