@@ -8,19 +8,13 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Supabase & EmailJS Libraries -->
+    <!-- Supabase JS Client Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function() {
-            emailjs.init("YOUR_EMAILJS_PUBLIC_KEY"); // ضع مفتاح EmailJS الخاص بك هنا لاحقاً إذا رغبت
-        })();
-    </script>
     
     <style>
         :root {
@@ -41,15 +35,15 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-dark); color: var(--text-light); font-family: var(--font-body); overflow-x: hidden; line-height: 1.6; }
 
-        /* --- TOP ANNOUNCEMENT & DELIVERY BAR --- */
+        /* --- TOP ANNOUNCEMENT & DELIVERY BAR (خط حالم سحري فاخر) --- */
         .top-announcement-bar {
             background: linear-gradient(90deg, #1A120B, #2C1B10);
             border-bottom: 1px solid rgba(212, 140, 70, 0.25);
-            padding: 10px 4%;
+            padding: 12px 4%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             position: fixed;
             top: 0;
             left: 0;
@@ -64,17 +58,18 @@
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 6px;
-            letter-spacing: 0.5px;
-            font-family: var(--font-title); /* تم توحيد الخط ليطابق الشريط الآخر */
-            font-size: 1.1rem;
+            gap: 8px;
+            letter-spacing: 1px;
+            font-family: var(--font-title);
+            font-style: italic;
+            font-size: 1.25rem;
         }
 
         .rotating-quotes-container {
             flex-grow: 1;
             text-align: center;
             overflow: hidden;
-            height: 28px;
+            height: 32px;
             position: relative;
         }
 
@@ -86,9 +81,10 @@
             opacity: 0;
             transition: opacity 0.8s ease-in-out;
             color: var(--text-light);
-            font-family: var(--font-title); /* تم توحيد الخط هنا أيضاً */
-            font-size: 1.2rem;
-            letter-spacing: 1.2px;
+            font-family: var(--font-title); /* خط حالم سحري فاخر */
+            font-size: 1.3rem;
+            letter-spacing: 1.5px;
+            font-style: italic;
             font-weight: 600;
         }
 
@@ -99,11 +95,12 @@
         .gold-highlight-text {
             color: var(--accent-gold-bright);
             font-weight: 700;
+            font-style: normal;
         }
 
         /* --- NAVIGATION --- */
         nav {
-            position: fixed; top: 48px; left: 0; width: 100%; z-index: 100;
+            position: fixed; top: 52px; left: 0; width: 100%; z-index: 100;
             padding: 14px 4%; display: flex; justify-content: space-between; align-items: center;
             background: rgba(10, 8, 7, 0.92); backdrop-filter: blur(14px);
             border-bottom: 1px solid rgba(212, 140, 70, 0.15);
@@ -640,6 +637,21 @@
         </div>
     </div>
 
+    <!-- ORDER SUCCESS & EMAIL NOTIFICATION MODAL (حل مباشر ومؤكد لإرسال الإيميل) -->
+    <div class="modal-overlay" id="orderSuccessModal">
+        <div class="custom-dialog-box" style="max-width:520px; text-align:center;">
+            <div style="font-size:3rem; color:var(--accent-gold-bright); margin-bottom:10px;"><i class="fa-solid fa-circle-check"></i></div>
+            <h3 style="font-family:var(--font-title); font-size:1.8rem; color:var(--accent-gold-bright); margin-bottom:10px;">Order Placed Successfully!</h3>
+            <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:20px;">Your order has been saved and registered in our system. To instantly notify the bakery owner, click the button below to send your order details via email:</p>
+            
+            <a id="emailDispatchBtn" href="#" target="_blank" class="submit-btn" style="display:block; text-decoration:none; margin-bottom:14px; background:linear-gradient(135deg, var(--accent-gold), var(--accent-copper)); color:var(--bg-dark); padding:14px; border-radius:30px; font-weight:700;">
+                <i class="fa-solid fa-envelope-circle-check"></i> Send Order Notification to Email
+            </a>
+            
+            <button style="background:transparent; border:1px solid rgba(255,255,255,0.15); color:var(--text-light); padding:10px 24px; border-radius:20px; cursor:pointer; width:100%;" onclick="closeModal('orderSuccessModal')">Close Window</button>
+        </div>
+    </div>
+
     <!-- UNIFIED CUSTOMER / ADMIN AUTH & PROFILE MODAL -->
     <div class="modal-overlay" id="customerAuthModal">
         <div class="custom-dialog-box">
@@ -1159,7 +1171,7 @@
             document.getElementById('cartTotalSum').textContent = `$${total.toFixed(2)}`;
         }
 
-        /* --- CHECKOUT & ORDERS LOGIC WITH EMAIL NOTIFICATION --- */
+        /* --- CHECKOUT & ORDERS LOGIC WITH GUARANTEED EMAIL NOTIFICATION MODAL --- */
         function openCheckoutModal() {
             if (!cart.length) return alert("Your cart is empty!");
             closeModal('cartDrawer');
@@ -1197,29 +1209,21 @@
                 return;
             }
 
-            // إرسال إشعار فوري عبر EmailJS لإيميلك الشخصي
-            try {
-                emailjs.send("service_default", "template_default", {
-                    to_email: "TheFermentedTableLLC@gmail.com",
-                    customer_name: customer_name,
-                    phone: phone,
-                    address: address,
-                    items: itemsListSummary,
-                    total: `$${total_amount.toFixed(2)}`
-                });
-            } catch (err) {
-                console.log("Email dispatch triggered via mailto backup:", err);
-            }
-
-            // فتح عميل البريد الإلكتروني كضمان لاستقبال الإشعار فوراً
+            // تجهيز رابط الإيميل الفوري لبريدك الشخصي
             const emailSubject = encodeURIComponent(`New Order from ${customer_name} - The Fermented Table`);
             const emailBody = encodeURIComponent(`Hello Jasmin,\n\nA new order has been placed on your website:\n\nCustomer: ${customer_name}\nPhone: ${phone}\nAddress: ${address}\nItems: ${itemsListSummary}\nTotal: $${total_amount.toFixed(2)}\n\nPayment Method: Cash on Delivery (Washington State)`);
-            window.location.href = `mailto:TheFermentedTableLLC@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+            const mailtoLink = `mailto:TheFermentedTableLLC@gmail.com?subject=${emailSubject}&body=${emailBody}`;
 
+            // ربط زر الإيميل في النافذة المنبثقة
+            document.getElementById('emailDispatchBtn').href = mailtoLink;
+
+            // تفريغ السلة بعد إتمام الطلب بنجاح
             cart = [];
             updateCart();
             closeModal('checkoutFormModal');
-            alert(`Thank you, ${customer_name}! Your order has been placed successfully.\n\nAn instant email notification has been triggered to TheFermentedTableLLC@gmail.com. We will reach out at ${phone} to confirm your Washington State delivery.`);
+
+            // إظهار نافذة النجاح المؤكدة لإرسال الإيميل
+            document.getElementById('orderSuccessModal').classList.add('active');
         }
 
         function closeModal(id) {
