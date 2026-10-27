@@ -35,17 +35,74 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-dark); color: var(--text-light); font-family: var(--font-body); overflow-x: hidden; line-height: 1.6; }
 
+        /* --- TOP ANNOUNCEMENT & DELIVERY BAR --- */
+        .top-announcement-bar {
+            background: linear-gradient(90deg, #1A120B, #2C1B10);
+            border-bottom: 1px solid rgba(212, 140, 70, 0.25);
+            padding: 10px 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.82rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 101;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .delivery-badge-tag {
+            color: var(--accent-gold-bright);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .rotating-quotes-container {
+            flex-grow: 1;
+            text-align: center;
+            overflow: hidden;
+            height: 24px;
+            position: relative;
+        }
+
+        .quote-slide-item {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            color: var(--text-light);
+            font-family: var(--font-title);
+            font-size: 1.05rem;
+            letter-spacing: 1px;
+        }
+
+        .quote-slide-item.active {
+            opacity: 1;
+        }
+
+        .gold-highlight-text {
+            color: var(--accent-gold-bright);
+            font-weight: 700;
+        }
+
         /* --- NAVIGATION --- */
         nav {
-            position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
-            padding: 16px 4%; display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 44px; left: 0; width: 100%; z-index: 100;
+            padding: 14px 4%; display: flex; justify-content: space-between; align-items: center;
             background: rgba(10, 8, 7, 0.92); backdrop-filter: blur(14px);
             border-bottom: 1px solid rgba(212, 140, 70, 0.15);
         }
 
         .brand-container { display: flex; align-items: center; gap: 16px; text-decoration: none; }
         .logo-emblem-outer {
-            width: 68px; height: 68px; border-radius: 50%; padding: 3px;
+            width: 60px; height: 60px; border-radius: 50%; padding: 3px;
             background: linear-gradient(135deg, var(--accent-gold), rgba(212, 140, 70, 0.2), var(--accent-copper));
             box-shadow: 0 0 20px rgba(212, 140, 70, 0.35); display: flex; align-items: center; justify-content: center;
         }
@@ -54,9 +111,9 @@
         @keyframes continuousRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         .brand-text-wrapper { display: flex; flex-direction: column; }
-        .nav-logo-text { font-family: var(--font-title); font-size: 1.55rem; letter-spacing: 2.5px; font-weight: 700; color: var(--text-light); text-transform: uppercase; line-height: 1; }
+        .nav-logo-text { font-family: var(--font-title); font-size: 1.4rem; letter-spacing: 2px; font-weight: 700; color: var(--text-light); text-transform: uppercase; line-height: 1; }
         .nav-logo-text span { color: var(--accent-gold); }
-        .founder-nav-tag { font-size: 0.8rem; color: var(--accent-gold-bright); letter-spacing: 1px; margin-top: 4px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+        .founder-nav-tag { font-size: 0.75rem; color: var(--accent-gold-bright); letter-spacing: 1px; margin-top: 4px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
 
         .nav-right-group { display: flex; align-items: center; gap: 28px; margin-left: auto; }
         .nav-links { display: flex; gap: 28px; list-style: none; }
@@ -85,7 +142,7 @@
         /* --- HERO SECTION --- */
         .hero {
             min-height: 100vh; display: grid; grid-template-columns: 1fr 1.35fr; align-items: center;
-            padding: 120px 4% 60px 4%; position: relative; gap: 30px;
+            padding: 160px 4% 60px 4%; position: relative; gap: 30px;
             background: radial-gradient(circle at 70% 50%, rgba(45, 20, 10, 0.45) 0%, rgba(10, 8, 7, 1) 75%);
         }
         .hero-text { max-width: 540px; z-index: 2; }
@@ -250,9 +307,10 @@
         .toast.show { transform: translateX(-50%) translateY(0); }
 
         @media screen and (max-width: 992px) {
-            nav { padding: 12px 5%; flex-direction: column; gap: 12px; }
+            .top-announcement-bar { justify-content: center; text-align: center; font-size: 0.75rem; }
+            nav { top: 70px; padding: 12px 5%; flex-direction: column; gap: 12px; }
             .nav-right-group { width: 100%; flex-direction: column; gap: 12px; align-items: center; }
-            .hero { grid-template-columns: 1fr; padding: 140px 5% 40px 5%; text-align: center; }
+            .hero { grid-template-columns: 1fr; padding: 180px 5% 40px 5%; text-align: center; }
             .hero-text { max-width: 100%; display: flex; flex-direction: column; align-items: center; }
             .hero-title { font-size: 2.8rem; }
             .hero-slider-container { height: 320px; }
@@ -267,6 +325,26 @@
     </style>
 </head>
 <body>
+
+    <!-- TOP ANNOUNCEMENT & DELIVERY BAR -->
+    <div class="top-announcement-bar">
+        <div class="delivery-badge-tag">
+            <i class="fa-solid fa-truck-fast"></i> Local Delivery: Washington State Only (WA)
+        </div>
+        <div class="rotating-quotes-container" id="rotatingQuotesContainer">
+            <div class="quote-slide-item active">Bring home something warm, fresh, and made with love.</div>
+            <div class="quote-slide-item">Slow-fermented, thoughtfully made, and ready for your table.</div>
+            <div class="quote-slide-item">A little bakery joy makes every day better.</div>
+            <div class="quote-slide-item">Made by hand, meant to be shared.</div>
+            <div class="quote-slide-item">Fresh from our oven to the people you love.</div>
+            <div class="quote-slide-item">Find your new favorite, baked one loaf at a time.</div>
+            <div class="quote-slide-item">Good things take time—and taste even better because of it.</div>
+            <div class="quote-slide-item">Make room at the table for something delicious.</div>
+            <div class="quote-slide-item">From cozy mornings to shared moments, there’s a bake for every occasion.</div>
+            <div class="quote-slide-item">Treat yourself to the comfort of something homemade.</div>
+            <div class="quote-slide-item">A little extra warmth for your home—enjoy free shipping on orders over <span class="gold-highlight-text">$70</span>.</div>
+        </div>
+    </div>
 
     <!-- NAVIGATION -->
     <nav>
@@ -301,7 +379,6 @@
             </ul>
 
             <div class="nav-actions">
-                <!-- تم دمج زر الحساب الموحد وإلغاء زر الأدمن البارز -->
                 <button class="admin-login-btn" onclick="openAuthModal()" id="userAuthNavBtn">
                     <i class="fa-solid fa-user"></i> Account
                 </button>
@@ -479,6 +556,16 @@
             
             <div style="margin-bottom:30px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <h3 style="color:var(--accent-gold); font-size:1.2rem;">📦 Customer Orders (الطلبات الواردة)</h3>
+                </div>
+                <table class="admin-table">
+                    <thead><tr><th>Customer Name</th><th>Phone</th><th>Address</th><th>Total</th><th>Status</th></tr></thead>
+                    <tbody id="adminOrdersTableBody"></tbody>
+                </table>
+            </div>
+
+            <div style="margin-bottom:30px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                     <h3 style="color:var(--accent-gold); font-size:1.2rem;">🖼️ Hero Slider Management</h3>
                     <button class="submit-btn" style="width:auto; padding:6px 16px; font-size:0.8rem;" onclick="openAddHeroModal()">+ Add New Slide</button>
                 </div>
@@ -529,7 +616,22 @@
         </div>
     </div>
 
-    <!-- UNIFIED CUSTOMER / ADMIN AUTH MODAL (USERNAME & PASSWORD ONLY) -->
+    <!-- CHECKOUT FORM MODAL -->
+    <div class="modal-overlay" id="checkoutFormModal">
+        <div class="custom-dialog-box" style="max-width:480px;">
+            <h3 style="font-family:var(--font-title); font-size:1.6rem; color:var(--accent-gold-bright); margin-bottom:12px;">Complete Your Order</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:18px;">Please provide your Washington State address. We will reach out to confirm your order (Cash on Delivery).</p>
+            
+            <div class="form-group"><label>Your Full Name</label><input type="text" id="orderCustName" placeholder="e.g. Sarah Miller"></div>
+            <div class="form-group"><label>Phone Number</label><input type="tel" id="orderPhone" placeholder="e.g. 360-123-4567"></div>
+            <div class="form-group"><label>Washington State Address</label><textarea id="orderAddress" rows="2" placeholder="Street, City, WA... (Washington State only)"></textarea></div>
+
+            <button class="submit-btn" onclick="submitOrderToCloud()">Confirm Order (Cash on Delivery)</button>
+            <button style="background:none; border:none; color:var(--text-muted); margin-top:12px; cursor:pointer; width:100%; text-align:center;" onclick="closeModal('checkoutFormModal')">Cancel</button>
+        </div>
+    </div>
+
+    <!-- UNIFIED CUSTOMER / ADMIN AUTH MODAL -->
     <div class="modal-overlay" id="customerAuthModal">
         <div class="custom-dialog-box">
             <div id="authChoiceView">
@@ -549,7 +651,7 @@
                 <button style="background:none; border:none; color:var(--text-muted); margin-top:12px; cursor:pointer; width:100%; text-align:center;" onclick="switchAuthView('choice')">&larr; Back</button>
             </div>
 
-            <!-- LOGIN FORM (UNIFIED: ADMIN OR CUSTOMER - USERNAME & PASSWORD ONLY) -->
+            <!-- LOGIN FORM (UNIFIED) -->
             <div id="loginView" style="display:none;">
                 <h3 style="font-family:var(--font-title); font-size:1.5rem; color:var(--accent-gold-bright); margin-bottom:14px;">Sign In</h3>
                 <div class="form-group"><label>Username</label><input type="text" id="loginUser" placeholder="Enter username" autocomplete="off"></div>
@@ -558,14 +660,10 @@
                 <button style="background:none; border:none; color:var(--text-muted); margin-top:12px; cursor:pointer; width:100%; text-align:center;" onclick="switchAuthView('choice')">&larr; Back</button>
             </div>
 
-            <!-- PROFILE VIEW (WHEN LOGGED IN) -->
+            <!-- PROFILE VIEW -->
             <div id="customerProfileContainer" style="display:none;">
                 <h3 style="font-family:var(--font-title); color:var(--accent-gold-bright); margin-bottom:10px;">Welcome Back!</h3>
                 <h4 style="color:var(--text-light); margin-bottom:16px;" id="welcomeCustName"></h4>
-                <div style="margin:16px 0;">
-                    <h5 style="color:var(--accent-gold); margin-bottom:6px;">❤️ Favorite Products:</h5>
-                    <div id="custFavList" style="font-size:0.88rem; color:var(--text-muted);">No favorites added yet.</div>
-                </div>
                 <button class="submit-btn" style="background:#444; color:#fff;" onclick="logoutUser()">Sign Out</button>
             </div>
 
@@ -585,7 +683,7 @@
                 <span>Total:</span>
                 <span id="cartTotalSum">$0.00</span>
             </div>
-            <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+            <button class="checkout-btn" onclick="openCheckoutModal()">Proceed to Checkout</button>
         </div>
     </div>
 
@@ -605,7 +703,20 @@
         window.onload = async function() {
             await fetchCloudData();
             checkSavedSession();
+            initQuotesSlider();
         };
+
+        // Rotating Quotes Ticker Bar (Changes every 5 seconds)
+        function initQuotesSlider() {
+            const quotes = document.querySelectorAll('.quote-slide-item');
+            if(!quotes.length) return;
+            let currentQuote = 0;
+            setInterval(() => {
+                quotes[currentQuote].classList.remove('active');
+                currentQuote = (currentQuote + 1) % quotes.length;
+                quotes[currentQuote].classList.add('active');
+            }, 5000);
+        }
 
         async function fetchCloudData() {
             try {
@@ -724,7 +835,19 @@
             document.getElementById('productModal').classList.add('active');
         }
 
-        function openAdminDashboard() {
+        async function openAdminDashboard() {
+            let { data: ordersData } = await _supabase.from('orders').select('*').order('created_at', { ascending: false });
+            const ordersTbody = document.getElementById('adminOrdersTableBody');
+            ordersTbody.innerHTML = (ordersData && ordersData.length > 0) ? ordersData.map(o => `
+                <tr>
+                    <td><strong>${o.customer_name}</strong></td>
+                    <td>${o.phone}</td>
+                    <td>${o.address || '-'}</td>
+                    <td>$${parseFloat(o.total_amount).toFixed(2)}</td>
+                    <td><span style="background:rgba(212,140,70,0.2); color:var(--accent-gold-bright); padding:4px 8px; border-radius:12px; font-size:0.75rem;">${o.status}</span></td>
+                </tr>
+            `).join('') : `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No orders received yet.</td></tr>`;
+
             const heroTbody = document.getElementById('adminHeroTableBody');
             heroTbody.innerHTML = heroSlides.map((slide, idx) => `
                 <tr>
@@ -848,14 +971,11 @@
             }
         }
 
-        /* --- UNIFIED AUTH LOGIC (USERNAME & PASSWORD ONLY) --- */
+        /* --- AUTH LOGIC --- */
         function openAuthModal() {
             document.getElementById('customerAuthModal').classList.add('active');
-            if (loggedInUser) {
-                switchAuthView('profile');
-            } else {
-                switchAuthView('choice');
-            }
+            if (loggedInUser) switchAuthView('profile');
+            else switchAuthView('choice');
         }
 
         function switchAuthView(view) {
@@ -870,44 +990,29 @@
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPass').value.trim();
 
-            if (name.length < 4) {
-                alert("Name must be at least 4 characters long!");
-                return;
-            }
-            if (password.length < 6) {
-                alert("Password must be at least 6 characters or digits long!");
-                return;
-            }
-            if (!email) {
-                alert("Please enter a valid email!");
+            if (name.length < 4 || password.length < 6 || !email) {
+                alert("Please meet all character requirements!");
                 return;
             }
 
             const { data, error } = await _supabase.from('customers').insert([{ name, email, password }]).select();
             if (error) {
-                alert("Registration failed or email already exists!");
-                console.error(error);
+                alert("Registration failed!");
                 return;
             }
 
-            alert("Account created successfully! You can now sign in.");
+            alert("Account created successfully! Please sign in.");
             switchAuthView('login');
         }
 
-        // دالة تسجيل الدخول الموحدة (تتحقق هل هو Admin أم Customer باستخدام Username و Password فقط)
         async function unifiedLogin() {
             const username = document.getElementById('loginUser').value.trim();
             const password = document.getElementById('loginPass').value.trim();
 
-            if (!username || !password) {
-                alert("Please fill in all fields!");
-                return;
-            }
+            if (!username || !password) return alert("Please enter credentials!");
 
-            // 1. فحص هل المستخدم موجود في جدول الـ Admins
-            const { data: adminData, error: adminErr } = await _supabase.from('admins').select('*').eq('username', username).eq('password', password).single();
+            const { data: adminData } = await _supabase.from('admins').select('*').eq('username', username).eq('password', password).single();
             if (adminData) {
-                // وجدناه في الآدمنز -> نفتح لوحة التحكم فوراً
                 loggedInUser = { name: adminData.username, role: 'admin' };
                 localStorage.setItem('fermented_user', JSON.stringify(loggedInUser));
                 closeModal('customerAuthModal');
@@ -916,8 +1021,7 @@
                 return;
             }
 
-            // 2. إذا لم يكن آدمن، نفحص هل هو عميل مسجل في جدول Customers (سنبحث بالـ name كـ username أو نتحقق منه)
-            const { data: custData, error: custErr } = await _supabase.from('customers').select('*').eq('name', username).eq('password', password).single();
+            const { data: custData } = await _supabase.from('customers').select('*').eq('name', username).eq('password', password).single();
             if (custData) {
                 loggedInUser = { ...custData, role: 'customer' };
                 localStorage.setItem('fermented_user', JSON.stringify(loggedInUser));
@@ -927,7 +1031,7 @@
                 return;
             }
 
-            alert("Invalid Username or Password!");
+            alert("Invalid credentials!");
         }
 
         function checkSavedSession() {
@@ -988,12 +1092,46 @@
             document.getElementById('cartTotalSum').textContent = `$${total.toFixed(2)}`;
         }
 
-        function checkout() {
-            if(!cart.length) return alert("Your cart is empty!");
+        /* --- CHECKOUT & ORDERS LOGIC --- */
+        function openCheckoutModal() {
+            if (!cart.length) return alert("Your cart is empty!");
+            closeModal('cartDrawer');
+            if (loggedInUser) {
+                document.getElementById('orderCustName').value = loggedInUser.name || '';
+            }
+            document.getElementById('checkoutFormModal').classList.add('active');
+        }
+
+        async function submitOrderToCloud() {
+            const customer_name = document.getElementById('orderCustName').value.trim();
+            const phone = document.getElementById('orderPhone').value.trim();
+            const address = document.getElementById('orderAddress').value.trim();
+
+            if (!customer_name || !phone) {
+                alert("Please provide your name and phone number!");
+                return;
+            }
+
+            const total_amount = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
+
+            const { error } = await _supabase.from('orders').insert([{
+                customer_name,
+                phone,
+                address,
+                items: cart,
+                total_amount
+            }]);
+
+            if (error) {
+                alert("Something went wrong placing your order. Please try again!");
+                console.error(error);
+                return;
+            }
+
             cart = [];
             updateCart();
-            closeModal('cartDrawer');
-            showToast("Order placed successfully!");
+            closeModal('checkoutFormModal');
+            alert(`Thank you, ${customer_name}! Your order has been placed successfully.\n\nOur team will contact you at ${phone} to confirm Washington State delivery and Cash on Delivery payment.`);
         }
 
         function closeModal(id) {
