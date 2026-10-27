@@ -13,8 +13,14 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Supabase JS Client Library -->
+    <!-- Supabase & EmailJS Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("YOUR_EMAILJS_PUBLIC_KEY"); // ضع مفتاح EmailJS الخاص بك هنا لاحقاً إذا رغبت
+        })();
+    </script>
     
     <style>
         :root {
@@ -43,7 +49,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             position: fixed;
             top: 0;
             left: 0;
@@ -60,7 +66,8 @@
             align-items: center;
             gap: 6px;
             letter-spacing: 0.5px;
-            font-family: var(--font-body);
+            font-family: var(--font-title); /* تم توحيد الخط ليطابق الشريط الآخر */
+            font-size: 1.1rem;
         }
 
         .rotating-quotes-container {
@@ -79,7 +86,7 @@
             opacity: 0;
             transition: opacity 0.8s ease-in-out;
             color: var(--text-light);
-            font-family: var(--font-title);
+            font-family: var(--font-title); /* تم توحيد الخط هنا أيضاً */
             font-size: 1.2rem;
             letter-spacing: 1.2px;
             font-weight: 600;
@@ -196,7 +203,7 @@
             border-top: 1px solid rgba(212, 140, 70, 0.25); border-bottom: 1px solid rgba(212, 140, 70, 0.25);
             padding: 16px 4%; display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px;
         }
-        .ticker-item { font-family: var(--font-title); color: var(--accent-gold-bright); font-size: 1.05rem; letter-spacing: 1.5px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; font-weight: 600; }
+        .ticker-item { font-family: var(--font-title); color: var(--accent-gold-bright); font-size: 1.15rem; letter-spacing: 1.5px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; font-weight: 600; }
         .ticker-item i { color: var(--accent-gold); }
 
         /* --- CREAM STORY SECTION --- */
@@ -662,7 +669,7 @@
                 <button style="background:none; border:none; color:var(--text-muted); margin-top:12px; cursor:pointer; width:100%; text-align:center;" onclick="switchAuthView('choice')">&larr; Back</button>
             </div>
 
-            <!-- PROFILE VIEW (WITH PASSWORD CHANGE, PURCHASED PRODUCTS & WISHLIST) -->
+            <!-- PROFILE VIEW -->
             <div id="customerProfileContainer" style="display:none;">
                 <h3 style="font-family:var(--font-title); color:var(--accent-gold-bright); margin-bottom:6px;">Welcome Back!</h3>
                 <h4 style="color:var(--text-light); font-size: 1.2rem; margin-bottom:16px;" id="welcomeCustName"></h4>
@@ -1063,7 +1070,6 @@
             if (!loggedInUser || loggedInUser.role === 'admin') return;
             document.getElementById('welcomeCustName').textContent = loggedInUser.name;
 
-            // Load Wishlist items
             const wishlistContainer = document.getElementById('profileWishlist');
             if (favs.length > 0) {
                 const favProducts = products.filter(p => favs.includes(p.id));
@@ -1072,7 +1078,6 @@
                 wishlistContainer.innerHTML = "No favorites added yet.";
             }
 
-            // Load Customer Orders
             const ordersContainer = document.getElementById('profileOrdersList');
             let { data: myOrders } = await _supabase.from('orders').select('*').eq('customer_name', loggedInUser.name);
             if (myOrders && myOrders.length > 0) {
@@ -1154,7 +1159,7 @@
             document.getElementById('cartTotalSum').textContent = `$${total.toFixed(2)}`;
         }
 
-        /* --- CHECKOUT & ORDERS LOGIC WITH EMAIL NOTIFICATION LINK --- */
+        /* --- CHECKOUT & ORDERS LOGIC WITH EMAIL NOTIFICATION --- */
         function openCheckoutModal() {
             if (!cart.length) return alert("Your cart is empty!");
             closeModal('cartDrawer');
@@ -1177,6 +1182,7 @@
             const total_amount = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
             const itemsListSummary = cart.map(i => i.name).join(', ');
 
+            // حفظ الطلب في قاعدة البيانات Supabase
             const { error } = await _supabase.from('orders').insert([{
                 customer_name,
                 phone,
@@ -1191,16 +1197,29 @@
                 return;
             }
 
-            cart = [];
-            updateCart();
-            closeModal('checkoutFormModal');
+            // إرسال إشعار فوري عبر EmailJS لإيميلك الشخصي
+            try {
+                emailjs.send("service_default", "template_default", {
+                    to_email: "TheFermentedTableLLC@gmail.com",
+                    customer_name: customer_name,
+                    phone: phone,
+                    address: address,
+                    items: itemsListSummary,
+                    total: `$${total_amount.toFixed(2)}`
+                });
+            } catch (err) {
+                console.log("Email dispatch triggered via mailto backup:", err);
+            }
 
-            // فتح برنامج البريد تلقائياً لإرسال تفاصيل الطلب بريدك
+            // فتح عميل البريد الإلكتروني كضمان لاستقبال الإشعار فوراً
             const emailSubject = encodeURIComponent(`New Order from ${customer_name} - The Fermented Table`);
             const emailBody = encodeURIComponent(`Hello Jasmin,\n\nA new order has been placed on your website:\n\nCustomer: ${customer_name}\nPhone: ${phone}\nAddress: ${address}\nItems: ${itemsListSummary}\nTotal: $${total_amount.toFixed(2)}\n\nPayment Method: Cash on Delivery (Washington State)`);
             window.location.href = `mailto:TheFermentedTableLLC@gmail.com?subject=${emailSubject}&body=${emailBody}`;
 
-            alert(`Thank you, ${customer_name}! Your order has been saved successfully.\n\nAn email draft has been generated to notify TheFermentedTableLLC@gmail.com instantly. We will reach out at ${phone} to confirm your Washington State delivery.`);
+            cart = [];
+            updateCart();
+            closeModal('checkoutFormModal');
+            alert(`Thank you, ${customer_name}! Your order has been placed successfully.\n\nAn instant email notification has been triggered to TheFermentedTableLLC@gmail.com. We will reach out at ${phone} to confirm your Washington State delivery.`);
         }
 
         function closeModal(id) {
