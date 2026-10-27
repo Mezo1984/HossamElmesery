@@ -301,12 +301,9 @@
             </ul>
 
             <div class="nav-actions">
+                <!-- تم دمج زر الحساب الموحد وإلغاء زر الأدمن البارز -->
                 <button class="admin-login-btn" onclick="openAuthModal()" id="userAuthNavBtn">
                     <i class="fa-solid fa-user"></i> Account
-                </button>
-
-                <button class="admin-login-btn" onclick="openAdminLoginModal()">
-                    <i class="fa-solid fa-lock"></i> Admin
                 </button>
 
                 <button class="cart-icon-btn" id="openCart" title="Shopping Bag">
@@ -470,17 +467,6 @@
         </div>
     </div>
 
-    <!-- ADMIN LOGIN MODAL -->
-    <div class="modal-overlay" id="adminLoginModal">
-        <div class="custom-dialog-box">
-            <h3 style="font-family:var(--font-title); font-size:1.8rem; margin-bottom:16px; color:var(--accent-gold-bright);">Admin Secure Login</h3>
-            <div class="form-group"><label>Username</label><input type="text" id="adminUser" placeholder="Enter username" autocomplete="off"></div>
-            <div class="form-group"><label>Password</label><input type="password" id="adminPass" placeholder="Enter password" autocomplete="new-password"></div>
-            <button class="submit-btn" onclick="performAdminLogin()">Login to Dashboard</button>
-            <button style="background:none; border:none; color:var(--text-muted); margin-top:12px; cursor:pointer; width:100%; text-align:center;" onclick="closeModal('adminLoginModal')">Cancel</button>
-        </div>
-    </div>
-
     <!-- ADMIN DASHBOARD -->
     <div class="modal-overlay" id="adminDashboardModal">
         <div class="admin-dashboard-box" style="position: relative;">
@@ -543,7 +529,7 @@
         </div>
     </div>
 
-    <!-- CUSTOMER AUTH (REGISTER & LOGIN SEPARATE MODALS) -->
+    <!-- UNIFIED CUSTOMER / ADMIN AUTH MODAL (USERNAME & PASSWORD ONLY) -->
     <div class="modal-overlay" id="customerAuthModal">
         <div class="custom-dialog-box">
             <div id="authChoiceView">
@@ -553,7 +539,7 @@
                 <button class="submit-btn" style="background:transparent; border:1px solid var(--accent-gold); color:var(--accent-gold-bright);" onclick="switchAuthView('login')">Already have an account? Sign In</button>
             </div>
 
-            <!-- REGISTER FORM -->
+            <!-- REGISTER FORM (CUSTOMER) -->
             <div id="registerView" style="display:none;">
                 <h3 style="font-family:var(--font-title); font-size:1.5rem; color:var(--accent-gold-bright); margin-bottom:14px;">Create Account</h3>
                 <div class="form-group"><label>Full Name (Min 4 chars)</label><input type="text" id="regName" placeholder="Sarah Miller"></div>
@@ -563,12 +549,12 @@
                 <button style="background:none; border:none; color:var(--text-muted); margin-top:12px; cursor:pointer; width:100%; text-align:center;" onclick="switchAuthView('choice')">&larr; Back</button>
             </div>
 
-            <!-- LOGIN FORM -->
+            <!-- LOGIN FORM (UNIFIED: ADMIN OR CUSTOMER - USERNAME & PASSWORD ONLY) -->
             <div id="loginView" style="display:none;">
                 <h3 style="font-family:var(--font-title); font-size:1.5rem; color:var(--accent-gold-bright); margin-bottom:14px;">Sign In</h3>
-                <div class="form-group"><label>Email Address</label><input type="email" id="loginEmail" placeholder="sarah@example.com"></div>
-                <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="******"></div>
-                <button class="submit-btn" onclick="loginCustomer()">Sign In</button>
+                <div class="form-group"><label>Username</label><input type="text" id="loginUser" placeholder="Enter username" autocomplete="off"></div>
+                <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="Enter password" autocomplete="new-password"></div>
+                <button class="submit-btn" onclick="unifiedLogin()">Sign In</button>
                 <button style="background:none; border:none; color:var(--text-muted); margin-top:12px; cursor:pointer; width:100%; text-align:center;" onclick="switchAuthView('choice')">&larr; Back</button>
             </div>
 
@@ -580,7 +566,7 @@
                     <h5 style="color:var(--accent-gold); margin-bottom:6px;">❤️ Favorite Products:</h5>
                     <div id="custFavList" style="font-size:0.88rem; color:var(--text-muted);">No favorites added yet.</div>
                 </div>
-                <button class="submit-btn" style="background:#444; color:#fff;" onclick="logoutCustomer()">Sign Out</button>
+                <button class="submit-btn" style="background:#444; color:#fff;" onclick="logoutUser()">Sign Out</button>
             </div>
 
             <button style="background:none; border:none; color:var(--text-muted); margin-top:16px; cursor:pointer; width:100%; text-align:center;" onclick="closeModal('customerAuthModal')">Close Window</button>
@@ -738,24 +724,6 @@
             document.getElementById('productModal').classList.add('active');
         }
 
-        function openAdminLoginModal() {
-            document.getElementById('adminUser').value = "";
-            document.getElementById('adminPass').value = "";
-            document.getElementById('adminLoginModal').classList.add('active');
-        }
-
-        function performAdminLogin() {
-            const u = document.getElementById('adminUser').value;
-            const p = document.getElementById('adminPass').value;
-            if(u === "Jasmin" && p === "Hossam") {
-                closeModal('adminLoginModal');
-                openAdminDashboard();
-                showToast("Welcome, Admin Jasmin!");
-            } else {
-                alert("Invalid Admin Credentials!");
-            }
-        }
-
         function openAdminDashboard() {
             const heroTbody = document.getElementById('adminHeroTableBody');
             heroTbody.innerHTML = heroSlides.map((slide, idx) => `
@@ -880,7 +848,7 @@
             }
         }
 
-        /* --- REAL CUSTOMER AUTH LOGIC --- */
+        /* --- UNIFIED AUTH LOGIC (USERNAME & PASSWORD ONLY) --- */
         function openAuthModal() {
             document.getElementById('customerAuthModal').classList.add('active');
             if (loggedInUser) {
@@ -915,7 +883,6 @@
                 return;
             }
 
-            // Insert into Supabase customers table
             const { data, error } = await _supabase.from('customers').insert([{ name, email, password }]).select();
             if (error) {
                 alert("Registration failed or email already exists!");
@@ -927,26 +894,40 @@
             switchAuthView('login');
         }
 
-        async function loginCustomer() {
-            const email = document.getElementById('loginEmail').value.trim();
+        // دالة تسجيل الدخول الموحدة (تتحقق هل هو Admin أم Customer باستخدام Username و Password فقط)
+        async function unifiedLogin() {
+            const username = document.getElementById('loginUser').value.trim();
             const password = document.getElementById('loginPass').value.trim();
 
-            if (!email || !password) {
+            if (!username || !password) {
                 alert("Please fill in all fields!");
                 return;
             }
 
-            const { data, error } = await _supabase.from('customers').select('*').eq('email', email).eq('password', password).single();
-            if (error || !data) {
-                alert("Invalid email or password!");
+            // 1. فحص هل المستخدم موجود في جدول الـ Admins
+            const { data: adminData, error: adminErr } = await _supabase.from('admins').select('*').eq('username', username).eq('password', password).single();
+            if (adminData) {
+                // وجدناه في الآدمنز -> نفتح لوحة التحكم فوراً
+                loggedInUser = { name: adminData.username, role: 'admin' };
+                localStorage.setItem('fermented_user', JSON.stringify(loggedInUser));
+                closeModal('customerAuthModal');
+                openAdminDashboard();
+                showToast(`Welcome back, Admin ${adminData.username}!`);
                 return;
             }
 
-            loggedInUser = data;
-            localStorage.setItem('fermented_user', JSON.stringify(data));
-            updateUIAfterLogin();
-            closeModal('customerAuthModal');
-            showToast(`Welcome back, ${data.name}!`);
+            // 2. إذا لم يكن آدمن، نفحص هل هو عميل مسجل في جدول Customers (سنبحث بالـ name كـ username أو نتحقق منه)
+            const { data: custData, error: custErr } = await _supabase.from('customers').select('*').eq('name', username).eq('password', password).single();
+            if (custData) {
+                loggedInUser = { ...custData, role: 'customer' };
+                localStorage.setItem('fermented_user', JSON.stringify(loggedInUser));
+                updateUIAfterLogin();
+                closeModal('customerAuthModal');
+                showToast(`Welcome back, ${custData.name}!`);
+                return;
+            }
+
+            alert("Invalid Username or Password!");
         }
 
         function checkSavedSession() {
@@ -960,11 +941,11 @@
         function updateUIAfterLogin() {
             if (loggedInUser) {
                 document.getElementById('userAuthNavBtn').innerHTML = `<i class="fa-solid fa-user-check"></i> ${loggedInUser.name}`;
-                document.getElementById('welcomeCustName').textContent = loggedInUser.name + " (" + loggedInUser.email + ")";
+                document.getElementById('welcomeCustName').textContent = loggedInUser.name;
             }
         }
 
-        function logoutCustomer() {
+        function logoutUser() {
             loggedInUser = null;
             localStorage.removeItem('fermented_user');
             document.getElementById('userAuthNavBtn').innerHTML = `<i class="fa-solid fa-user"></i> Account`;
