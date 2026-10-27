@@ -35,7 +35,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-dark); color: var(--text-light); font-family: var(--font-body); overflow-x: hidden; line-height: 1.6; }
 
-        /* --- TOP ANNOUNCEMENT & DELIVERY BAR (خط حالم سحري فاخر) --- */
+        /* --- TOP ANNOUNCEMENT & DELIVERY BAR --- */
         .top-announcement-bar {
             background: linear-gradient(90deg, #1A120B, #2C1B10);
             border-bottom: 1px solid rgba(212, 140, 70, 0.25);
@@ -81,7 +81,7 @@
             opacity: 0;
             transition: opacity 0.8s ease-in-out;
             color: var(--text-light);
-            font-family: var(--font-title); /* خط حالم سحري فاخر */
+            font-family: var(--font-title);
             font-size: 1.3rem;
             letter-spacing: 1.5px;
             font-style: italic;
@@ -274,7 +274,7 @@
         .contact-form { background: var(--bg-dark-card); padding: 34px; border-radius: 20px; border: 1px solid rgba(212, 140, 70, 0.2); }
         .form-group { margin-bottom: 18px; }
         .form-group label { display: block; margin-bottom: 6px; font-size: 0.82rem; color: var(--accent-gold); letter-spacing: 1px; text-transform: uppercase; }
-        .form-group input, .form-group textarea { width: 100%; padding: 13px; background: rgba(10, 8, 7, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; color: var(--text-light); font-family: var(--font-body); outline: none; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 13px; background: rgba(10, 8, 7, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; color: var(--text-light); font-family: var(--font-body); outline: none; }
         .submit-btn { width: 100%; background: var(--accent-gold); color: var(--bg-dark); border: none; padding: 15px; border-radius: 30px; font-weight: 700; cursor: pointer; }
 
         /* --- MODALS & DIALOGS --- */
@@ -476,12 +476,8 @@
             </div>
         </div>
 
-        <div class="category-filters">
-            <button class="filter-btn active" onclick="filterCategory('all', event)">All Bakery Items</button>
-            <button class="filter-btn" onclick="filterCategory('sourdough', event)">Wild Sourdough</button>
-            <button class="filter-btn" onclick="filterCategory('viennoiserie', event)">French Pastries</button>
-            <button class="filter-btn" onclick="filterCategory('specialty', event)">Specialty Sweets</button>
-        </div>
+        <!-- أزرار الكاتجوري المحدثة ديناميكياً -->
+        <div class="category-filters" id="categoryFiltersContainer"></div>
 
         <div class="product-grid" id="productGrid"></div>
     </section>
@@ -559,7 +555,19 @@
                 <h2 style="font-family:var(--font-title); color:var(--accent-gold-bright);">Admin Control Center (Cloud Live)</h2>
                 <button class="submit-btn" style="width:auto; padding:8px 20px;" onclick="openAddProductModal()">+ Add New Product</button>
             </div>
-            
+
+            <!-- قسم إدارة الفئات (Categories Management) -->
+            <div style="margin-bottom:30px; background:rgba(255,255,255,0.02); padding:18px; border-radius:16px; border:1px solid rgba(212,140,70,0.2);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <h3 style="color:var(--accent-gold); font-size:1.2rem;"><i class="fa-solid fa-list"></i> Categories Management (إدارة الفئات)</h3>
+                    <button class="submit-btn" style="width:auto; padding:6px 16px; font-size:0.8rem;" onclick="openAddCategoryModal()">+ Add New Category</button>
+                </div>
+                <table class="admin-table">
+                    <thead><tr><th>Category Name</th><th>Slug/ID</th><th>Actions</th></tr></thead>
+                    <tbody id="adminCategoriesTableBody"></tbody>
+                </table>
+            </div>
+
             <div style="margin-bottom:30px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                     <h3 style="color:var(--accent-gold); font-size:1.2rem;">📦 Customer Orders (الطلبات الواردة)</h3>
@@ -595,17 +603,29 @@
         </div>
     </div>
 
-    <!-- ADD/EDIT PRODUCT MODAL -->
+    <!-- ADD/EDIT PRODUCT MODAL (مع الخيار المنسدل للفئات) -->
     <div class="modal-overlay" id="editProductModal">
         <div class="custom-dialog-box" style="max-width:500px;">
             <h3 style="font-family:var(--font-title); color:var(--accent-gold-bright); margin-bottom:14px;" id="editModalTitle">Edit Product</h3>
             <input type="hidden" id="editProdId">
             <div class="form-group"><label>Product Name</label><input type="text" id="editProdName"></div>
+            <div class="form-group"><label>Category (الفئة)</label><select id="editProdCategorySelect"></select></div>
             <div class="form-group"><label>Price ($)</label><input type="number" step="0.01" id="editProdPrice"></div>
             <div class="form-group"><label>Image URL</label><input type="url" id="editProdImg"></div>
             <div class="form-group"><label>Description</label><textarea id="editProdDesc" rows="2"></textarea></div>
             <button class="submit-btn" onclick="saveProductChanges()">Save to Cloud</button>
             <button style="background:none; border:none; color:var(--text-muted); margin-top:10px; cursor:pointer; width:100%; text-align:center;" onclick="closeModal('editProductModal')">Cancel</button>
+        </div>
+    </div>
+
+    <!-- ADD/EDIT CATEGORY MODAL -->
+    <div class="modal-overlay" id="editCategoryModal">
+        <div class="custom-dialog-box" style="max-width:450px;">
+            <h3 style="font-family:var(--font-title); color:var(--accent-gold-bright); margin-bottom:14px;" id="editCatModalTitle">Add New Category</h3>
+            <input type="hidden" id="editCatId">
+            <div class="form-group"><label>Category Name</label><input type="text" id="editCatName" placeholder="e.g. French Pastries"></div>
+            <button class="submit-btn" onclick="saveCategoryChanges()">Save Category</button>
+            <button style="background:none; border:none; color:var(--text-muted); margin-top:10px; cursor:pointer; width:100%; text-align:center;" onclick="closeModal('editCategoryModal')">Cancel</button>
         </div>
     </div>
 
@@ -637,22 +657,19 @@
         </div>
     </div>
 
-    <!-- ORDER SUCCESS & EMAIL NOTIFICATION MODAL (حل مطور ومضمون 100%) -->
+    <!-- ORDER SUCCESS & EMAIL NOTIFICATION MODAL -->
     <div class="modal-overlay" id="orderSuccessModal">
         <div class="custom-dialog-box" style="max-width:540px; text-align:center;">
             <div style="font-size:3rem; color:var(--accent-gold-bright); margin-bottom:10px;"><i class="fa-solid fa-circle-check"></i></div>
             <h3 style="font-family:var(--font-title); font-size:1.8rem; color:var(--accent-gold-bright); margin-bottom:10px;">Order Placed Successfully!</h3>
             <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:16px;">Your order has been safely saved in the cloud and recorded in your admin dashboard. Choose how to notify your email instantly:</p>
             
-            <!-- صندوق عرض تفاصيل الطلب -->
             <div id="orderDetailsBox" style="background:rgba(255,255,255,0.03); border:1px solid rgba(212,140,70,0.3); border-radius:12px; padding:14px; text-align:left; font-size:0.85rem; color:var(--text-light); margin-bottom:16px; max-height:140px; overflow-y:auto; line-height:1.5;"></div>
 
-            <!-- زر النسخ السريع -->
             <button class="submit-btn" style="margin-bottom:10px; background:var(--accent-gold);" onclick="copyOrderText()">
                 <i class="fa-solid fa-copy"></i> Copy Order Details to Clipboard
             </button>
 
-            <!-- زر فتح Gmail Web المباشر -->
             <a id="gmailWebBtn" href="#" target="_blank" class="submit-btn" style="display:block; text-decoration:none; margin-bottom:14px; background:transparent; border:1px solid var(--accent-gold); color:var(--accent-gold-bright); padding:14px; border-radius:30px; font-weight:700;">
                 <i class="fa-solid fa-envelope"></i> Open Gmail Web & Send
             </a>
@@ -695,19 +712,16 @@
                 <h3 style="font-family:var(--font-title); color:var(--accent-gold-bright); margin-bottom:6px;">Welcome Back!</h3>
                 <h4 style="color:var(--text-light); font-size: 1.2rem; margin-bottom:16px;" id="welcomeCustName"></h4>
                 
-                <!-- Wishlist Section -->
                 <div style="margin:14px 0; background:rgba(255,255,255,0.02); padding:12px; border-radius:12px; border:1px solid rgba(212,140,70,0.2);">
                     <h5 style="color:var(--accent-gold); margin-bottom:6px;"><i class="fa-solid fa-heart"></i> My Wishlist (المفضلة)</h5>
                     <div id="profileWishlist" style="font-size:0.88rem; color:var(--text-muted); max-height:100px; overflow-y:auto;">No favorites added yet.</div>
                 </div>
 
-                <!-- Purchased Products / Orders Section -->
                 <div style="margin:14px 0; background:rgba(255,255,255,0.02); padding:12px; border-radius:12px; border:1px solid rgba(212,140,70,0.2);">
                     <h5 style="color:var(--accent-gold); margin-bottom:6px;"><i class="fa-solid fa-bag-shopping"></i> My Purchased Orders (المنتجات المشتراة)</h5>
                     <div id="profileOrdersList" style="font-size:0.88rem; color:var(--text-muted); max-height:100px; overflow-y:auto;">No past orders found.</div>
                 </div>
 
-                <!-- Change Password Section -->
                 <div style="margin:14px 0; background:rgba(255,255,255,0.02); padding:12px; border-radius:12px; border:1px solid rgba(212,140,70,0.2);">
                     <h5 style="color:var(--accent-gold); margin-bottom:6px;"><i class="fa-solid fa-key"></i> Change Password (تغيير كلمة المرور)</h5>
                     <div class="form-group" style="margin-bottom:8px;"><input type="password" id="newPasswordInput" placeholder="New password (min 6 chars)"></div>
@@ -746,6 +760,7 @@
 
         let heroSlides = [];
         let products = [];
+        let categories = [];
         let cart = [];
         let favs = [];
         let loggedInUser = null;
@@ -770,6 +785,18 @@
 
         async function fetchCloudData() {
             try {
+                // 1. جلب الفئات (Categories)
+                let { data: catData } = await _supabase.from('categories').select('*');
+                if (!catData || catData.length === 0) {
+                    const defaultCats = getFullDefaultCategories();
+                    await _supabase.from('categories').insert(defaultCats);
+                    let { data: newCats } = await _supabase.from('categories').select('*');
+                    categories = newCats || defaultCats;
+                } else {
+                    categories = catData;
+                }
+
+                // 2. جلب المنتجات (Products)
                 let { data: prodData } = await _supabase.from('products').select('*');
                 if (!prodData || prodData.length === 0) {
                     const defaults = getFullDefaultProducts();
@@ -780,6 +807,7 @@
                     products = prodData;
                 }
 
+                // 3. جلب الـ Hero Slides
                 let { data: slideData } = await _supabase.from('hero_slides').select('*');
                 if (!slideData || slideData.length === 0) {
                     const defaultSlides = getFullDefaultSlides();
@@ -791,14 +819,25 @@
                 }
 
                 initSlider();
+                renderCategoryFilters();
                 renderProducts(products);
             } catch (err) {
                 console.error("Cloud fetch error:", err);
+                categories = getFullDefaultCategories();
                 products = getFullDefaultProducts();
                 heroSlides = getFullDefaultSlides();
                 initSlider();
+                renderCategoryFilters();
                 renderProducts(products);
             }
+        }
+
+        function getFullDefaultCategories() {
+            return [
+                { name: "Wild Sourdough", slug: "sourdough" },
+                { name: "French Pastries", slug: "viennoiserie" },
+                { name: "Specialty Sweets", slug: "specialty" }
+            ];
         }
 
         function getFullDefaultProducts() {
@@ -814,6 +853,15 @@
                 { title: "Chocolate Cherry Sourdough", description: "Rich Belgian dark chocolate chips blended with tart dried cherries in a dark cocoa long-fermented sourdough loaf.", image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?q=80&w=1200" },
                 { title: "Country Golden Boule", description: "Our signature 36-hour slow-ferment whole wheat sourdough with a deep golden blistered crust.", image: "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?q=80&w=1200" }
             ];
+        }
+
+        function renderCategoryFilters() {
+            const container = document.getElementById('categoryFiltersContainer');
+            let html = `<button class="filter-btn active" onclick="filterCategory('all', event)">All Bakery Items</button>`;
+            categories.forEach(c => {
+                html += `<button class="filter-btn" onclick="filterCategory('${c.slug}', event)">${c.name}</button>`;
+            });
+            container.innerHTML = html;
         }
 
         function initSlider() {
@@ -886,6 +934,20 @@
         }
 
         async function openAdminDashboard() {
+            // 1. جدول الفئات في الأدمن
+            const catTbody = document.getElementById('adminCategoriesTableBody');
+            catTbody.innerHTML = categories.map(c => `
+                <tr>
+                    <td><strong>${c.name}</strong></td>
+                    <td><code style="color:var(--accent-gold);">${c.slug}</code></td>
+                    <td>
+                        <button class="btn-sm-action btn-edit" onclick="openEditCategoryModal(${c.id})">Edit</button>
+                        <button class="btn-sm-action btn-del" onclick="deleteCategory(${c.id})">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // 2. جدول الطلبات
             let { data: ordersData } = await _supabase.from('orders').select('*').order('created_at', { ascending: false });
             const ordersTbody = document.getElementById('adminOrdersTableBody');
             ordersTbody.innerHTML = (ordersData && ordersData.length > 0) ? ordersData.map(o => `
@@ -898,6 +960,7 @@
                 </tr>
             `).join('') : `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No orders received yet.</td></tr>`;
 
+            // 3. جدول الـ Hero Slides
             const heroTbody = document.getElementById('adminHeroTableBody');
             heroTbody.innerHTML = heroSlides.map((slide, idx) => `
                 <tr>
@@ -910,12 +973,13 @@
                 </tr>
             `).join('');
 
+            // 4. جدول المنتجات
             const tbody = document.getElementById('adminTableBody');
             tbody.innerHTML = products.map(p => `
                 <tr>
                     <td><img src="${p.image}"></td>
                     <td><strong>${p.name}</strong></td>
-                    <td>${p.category}</td>
+                    <td><span style="background:rgba(212,140,70,0.15); color:var(--accent-gold-bright); padding:2px 8px; border-radius:10px; font-size:0.75rem;">${p.category || 'Uncategorized'}</span></td>
                     <td>$${parseFloat(p.price).toFixed(2)}</td>
                     <td>
                         <button class="btn-sm-action btn-edit" onclick="openEditModal(${p.id})">Edit</button>
@@ -924,6 +988,55 @@
                 </tr>
             `).join('');
             document.getElementById('adminDashboardModal').classList.add('active');
+        }
+
+        /* --- CATEGORIES MANAGEMENT LOGIC --- */
+        function openAddCategoryModal() {
+            document.getElementById('editCatModalTitle').textContent = "Add New Category";
+            document.getElementById('editCatId').value = "";
+            document.getElementById('editCatName').value = "";
+            document.getElementById('editCategoryModal').classList.add('active');
+        }
+
+        function openEditCategoryModal(id) {
+            const cat = categories.find(c => c.id === id);
+            document.getElementById('editCatModalTitle').textContent = "Edit Category";
+            document.getElementById('editCatId').value = cat.id;
+            document.getElementById('editCatName').value = cat.name;
+            document.getElementById('editCategoryModal').classList.add('active');
+        }
+
+        async function saveCategoryChanges() {
+            const id = document.getElementById('editCatId').value;
+            const name = document.getElementById('editCatName').value.trim();
+            if(!name) return alert("Please enter a category name!");
+
+            const slug = name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+
+            if(id) {
+                await _supabase.from('categories').update({ name, slug }).eq('id', id);
+            } else {
+                await _supabase.from('categories').insert([{ name, slug }]);
+            }
+
+            closeModal('editCategoryModal');
+            await fetchCloudData();
+            openAdminDashboard();
+            showToast("Category saved successfully!");
+        }
+
+        async function deleteCategory(id) {
+            if(confirm("Are you sure you want to delete this category?")) {
+                await _supabase.from('categories').delete().eq('id', id);
+                await fetchCloudData();
+                openAdminDashboard();
+                showToast("Category deleted!");
+            }
+        }
+
+        function populateCategoryDropdown(selectedCategory) {
+            const select = document.getElementById('editProdCategorySelect');
+            select.innerHTML = categories.map(c => `<option value="${c.slug}" ${c.slug === selectedCategory ? 'selected' : ''}>${c.name}</option>`).join('');
         }
 
         function openAddHeroModal() {
@@ -979,6 +1092,7 @@
             document.getElementById('editProdPrice').value = "";
             document.getElementById('editProdImg').value = "";
             document.getElementById('editProdDesc').value = "";
+            populateCategoryDropdown(categories[0]?.slug || '');
             document.getElementById('editProductModal').classList.add('active');
         }
 
@@ -990,20 +1104,22 @@
             document.getElementById('editProdPrice').value = p.price;
             document.getElementById('editProdImg').value = p.image;
             document.getElementById('editProdDesc').value = p.description || p.desc;
+            populateCategoryDropdown(p.category);
             document.getElementById('editProductModal').classList.add('active');
         }
 
         async function saveProductChanges() {
             const id = document.getElementById('editProdId').value;
             const name = document.getElementById('editProdName').value;
+            const category = document.getElementById('editProdCategorySelect').value;
             const price = parseFloat(document.getElementById('editProdPrice').value);
             const image = document.getElementById('editProdImg').value;
             const description = document.getElementById('editProdDesc').value;
 
             if(id) {
-                await _supabase.from('products').update({ name, price, image, description }).eq('id', id);
+                await _supabase.from('products').update({ name, category, price, image, description }).eq('id', id);
             } else {
-                await _supabase.from('products').insert([{ name, price, image, description, category: 'sourdough', ingredients: 'Organic Ingredients.' }]);
+                await _supabase.from('products').insert([{ name, category, price, image, description, ingredients: 'Organic Ingredients.' }]);
             }
 
             closeModal('editProductModal');
@@ -1204,7 +1320,6 @@
             const total_amount = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
             const itemsListSummary = cart.map(i => i.name).join(', ');
 
-            // حفظ الطلب في قاعدة البيانات Supabase
             const { error } = await _supabase.from('orders').insert([{
                 customer_name,
                 phone,
@@ -1219,22 +1334,17 @@
                 return;
             }
 
-            // نص الرسالة الجاهزة
             lastOrderTextGlobal = `New Order from ${customer_name}\n\nCustomer: ${customer_name}\nPhone: ${phone}\nAddress: ${address}\nItems: ${itemsListSummary}\nTotal: $${total_amount.toFixed(2)}\nPayment: Cash on Delivery (Washington State)`;
 
-            // عرض النص في النافذة المنبثقة
             document.getElementById('orderDetailsBox').innerText = lastOrderTextGlobal;
 
-            // تجهيز رابط Gmail Web مباشر
             const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=TheFermentedTableLLC@gmail.com&su=${encodeURIComponent("New Order from " + customer_name)}&body=${encodeURIComponent(lastOrderTextGlobal)}`;
             document.getElementById('gmailWebBtn').href = gmailUrl;
 
-            // تفريغ السلة بعد إتمام الطلب بنجاح
             cart = [];
             updateCart();
             closeModal('checkoutFormModal');
 
-            // إظهار نافذة نجاح الطلب
             document.getElementById('orderSuccessModal').classList.add('active');
         }
 
