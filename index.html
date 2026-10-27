@@ -637,18 +637,27 @@
         </div>
     </div>
 
-    <!-- ORDER SUCCESS & EMAIL NOTIFICATION MODAL (حل مباشر ومؤكد لإرسال الإيميل) -->
+    <!-- ORDER SUCCESS & EMAIL NOTIFICATION MODAL (حل مطور ومضمون 100%) -->
     <div class="modal-overlay" id="orderSuccessModal">
-        <div class="custom-dialog-box" style="max-width:520px; text-align:center;">
+        <div class="custom-dialog-box" style="max-width:540px; text-align:center;">
             <div style="font-size:3rem; color:var(--accent-gold-bright); margin-bottom:10px;"><i class="fa-solid fa-circle-check"></i></div>
             <h3 style="font-family:var(--font-title); font-size:1.8rem; color:var(--accent-gold-bright); margin-bottom:10px;">Order Placed Successfully!</h3>
-            <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:20px;">Your order has been saved and registered in our system. To instantly notify the bakery owner, click the button below to send your order details via email:</p>
+            <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:16px;">Your order has been safely saved in the cloud and recorded in your admin dashboard. Choose how to notify your email instantly:</p>
             
-            <a id="emailDispatchBtn" href="#" target="_blank" class="submit-btn" style="display:block; text-decoration:none; margin-bottom:14px; background:linear-gradient(135deg, var(--accent-gold), var(--accent-copper)); color:var(--bg-dark); padding:14px; border-radius:30px; font-weight:700;">
-                <i class="fa-solid fa-envelope-circle-check"></i> Send Order Notification to Email
+            <!-- صندوق عرض تفاصيل الطلب -->
+            <div id="orderDetailsBox" style="background:rgba(255,255,255,0.03); border:1px solid rgba(212,140,70,0.3); border-radius:12px; padding:14px; text-align:left; font-size:0.85rem; color:var(--text-light); margin-bottom:16px; max-height:140px; overflow-y:auto; line-height:1.5;"></div>
+
+            <!-- زر النسخ السريع -->
+            <button class="submit-btn" style="margin-bottom:10px; background:var(--accent-gold);" onclick="copyOrderText()">
+                <i class="fa-solid fa-copy"></i> Copy Order Details to Clipboard
+            </button>
+
+            <!-- زر فتح Gmail Web المباشر -->
+            <a id="gmailWebBtn" href="#" target="_blank" class="submit-btn" style="display:block; text-decoration:none; margin-bottom:14px; background:transparent; border:1px solid var(--accent-gold); color:var(--accent-gold-bright); padding:14px; border-radius:30px; font-weight:700;">
+                <i class="fa-solid fa-envelope"></i> Open Gmail Web & Send
             </a>
             
-            <button style="background:transparent; border:1px solid rgba(255,255,255,0.15); color:var(--text-light); padding:10px 24px; border-radius:20px; cursor:pointer; width:100%;" onclick="closeModal('orderSuccessModal')">Close Window</button>
+            <button style="background:transparent; border:none; color:var(--text-muted); cursor:pointer; width:100%; text-align:center;" onclick="closeModal('orderSuccessModal')">Close Window</button>
         </div>
     </div>
 
@@ -740,6 +749,7 @@
         let cart = [];
         let favs = [];
         let loggedInUser = null;
+        let lastOrderTextGlobal = "";
 
         window.onload = async function() {
             await fetchCloudData();
@@ -1171,7 +1181,7 @@
             document.getElementById('cartTotalSum').textContent = `$${total.toFixed(2)}`;
         }
 
-        /* --- CHECKOUT & ORDERS LOGIC WITH GUARANTEED EMAIL NOTIFICATION MODAL --- */
+        /* --- CHECKOUT & ORDERS LOGIC --- */
         function openCheckoutModal() {
             if (!cart.length) return alert("Your cart is empty!");
             closeModal('cartDrawer');
@@ -1209,21 +1219,29 @@
                 return;
             }
 
-            // تجهيز رابط الإيميل الفوري لبريدك الشخصي
-            const emailSubject = encodeURIComponent(`New Order from ${customer_name} - The Fermented Table`);
-            const emailBody = encodeURIComponent(`Hello Jasmin,\n\nA new order has been placed on your website:\n\nCustomer: ${customer_name}\nPhone: ${phone}\nAddress: ${address}\nItems: ${itemsListSummary}\nTotal: $${total_amount.toFixed(2)}\n\nPayment Method: Cash on Delivery (Washington State)`);
-            const mailtoLink = `mailto:TheFermentedTableLLC@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+            // نص الرسالة الجاهزة
+            lastOrderTextGlobal = `New Order from ${customer_name}\n\nCustomer: ${customer_name}\nPhone: ${phone}\nAddress: ${address}\nItems: ${itemsListSummary}\nTotal: $${total_amount.toFixed(2)}\nPayment: Cash on Delivery (Washington State)`;
 
-            // ربط زر الإيميل في النافذة المنبثقة
-            document.getElementById('emailDispatchBtn').href = mailtoLink;
+            // عرض النص في النافذة المنبثقة
+            document.getElementById('orderDetailsBox').innerText = lastOrderTextGlobal;
+
+            // تجهيز رابط Gmail Web مباشر
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=TheFermentedTableLLC@gmail.com&su=${encodeURIComponent("New Order from " + customer_name)}&body=${encodeURIComponent(lastOrderTextGlobal)}`;
+            document.getElementById('gmailWebBtn').href = gmailUrl;
 
             // تفريغ السلة بعد إتمام الطلب بنجاح
             cart = [];
             updateCart();
             closeModal('checkoutFormModal');
 
-            // إظهار نافذة النجاح المؤكدة لإرسال الإيميل
+            // إظهار نافذة نجاح الطلب
             document.getElementById('orderSuccessModal').classList.add('active');
+        }
+
+        function copyOrderText() {
+            navigator.clipboard.writeText(lastOrderTextGlobal).then(() => {
+                showToast("Order details copied to clipboard!");
+            });
         }
 
         function closeModal(id) {
